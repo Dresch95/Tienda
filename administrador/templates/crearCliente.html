@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Crear cliente
+{% endblock %}
+
+{% block 'contenido' %}
+<div id="contenedorPrincipal">
+    <form action="{% url 'crearCliente' %}" method="post">
+        {% csrf_token %}
+        <h2>Datos Cliente</h2>
+        <div id="contenedorDatosCliente">
+            <div id="contenedorLabelsCrearCliente">
+                <label>Nombre </label>
+                <br>
+                <label>Email </label>
+                <br>
+                <label>Telefono </label>
+            </div>
+            <div id="contenedorInputsCrearCliente">
+                <input type="text" name="nombreClienteNuevo">
+                <br>
+                <input type="email" name="emailClienteNuevo">
+                <br>
+                <input type="text" name="telefonoClienteNuevo">
+            </div>
+        </div>
+        <h3>Direccion </h3>
+        <div id="contenedorDireccionCliente">
+            <div id="contenedorLabelsDireccion">
+                <label>Calle y Numero </label>
+                <br>
+                <label>Ciudad </label>
+                <br>
+                <label>Código Postal </label>
+                <br>
+                <label>Pais </label>
+                <br>
+                <label>Tipo</label>
+            </div>
+            <div id="contenedorInputsDireccion">
+                <input type="text" name="calleDireccionNueva">
+                <br>
+                <input type="text" name="ciudadDireccionNueva">
+                <br>
+                <input type="text" name="codigoDireccionNueva">
+                <br>
+                <input type="text" name="paisDireccionNueva">
+                <br>
+                <select name="tiposDireccion" id="tiposDireccion">
+                    <option value="FL">Completa</option>
+                    <option value="BL">Facturacion</option>
+                    <option value="SH">Envio</option>
+                </select>
+            </div>
+        </div>
+        <div class="centrarBoton">
+            <input type="submit" value="Crear">
+        </div>
+    </form>
+</div>
+{% endblock %}

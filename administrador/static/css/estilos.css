@@ -1,0 +1,77 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14pt;
+}
+table{
+    border:1px solid black;
+    margin-bottom: 15pt;
+}
+h2{
+    text-align: center;
+}
+h3{
+    margin-left: 15pt;
+    margin-top:15pt;
+}
+a{
+    text-decoration: none;
+}
+th,td{
+    padding:8pt;
+}
+#contenedorDatosCliente,#contenedorDireccionCliente{
+    width:100%;
+}
+#contenedorDatosCliente{
+    height: 55pt;
+}
+#contenedorDireccionCliente{
+    height: 90pt;
+}
+#contenedorInputsCrearCliente,#contenedorLabelsCrearCliente,#contenedorInputsDireccion,#contenedorLabelsDireccion{
+    width:45%;
+    float:left;
+}
+#contenedorPrincipal{
+    width:400pt;
+    margin:0 auto;
+    margin-top: 100pt;
+    border:1px solid black;
+}
+.botonEnlace{
+    padding: 5pt;
+    color:white;
+    background-color: cornflowerblue;
+}
+.Rojo{
+    background-color: red;
+}
+label{
+    display:inline-block;
+    margin-left:15pt;
+    margin-top:3pt;
+    margin-right:15pt;
+    width: 150pt;
+}
+input[type="text"],[type="email"]{
+    margin-top:3pt;
+    width: 96.5%;
+}
+input[type="submit"]{
+    display: inline-block;
+    font-size: 14pt;
+    width: 250pt;
+    height: 30pt;
+    background-color: cornflowerblue;
+    border:1px solid cornflowerblue;
+    color:white;
+    font-weight: bold;
+    margin:0 auto;
+}
+select{
+    width: 100%;
+}
+.centrarBoton{
+    margin:15pt;
+    text-align: center;
+}
