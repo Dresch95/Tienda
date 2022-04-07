@@ -26,6 +26,7 @@ def crearCliente(request):
         cliente.append(request.POST['nombreClienteNuevo'])
         cliente.append(request.POST['emailClienteNuevo'])
         cliente.append(request.POST['telefonoClienteNuevo'])
+        cliente.append(request.POST['urlImagenNuevoCliente'])
         direccion.append(request.POST['calleDireccionNueva'])
         direccion.append(request.POST['ciudadDireccionNueva'])
         direccion.append(request.POST['codigoDireccionNueva'])
@@ -33,7 +34,7 @@ def crearCliente(request):
         direccion.append(request.POST['tiposDireccion'])
         if all(item for item in cliente) and all(item for item in direccion):
             Address(street=direccion[0],city=direccion[1],code=direccion[2],country=direccion[3],type=direccion[4]).save()
-            Clients(name=cliente[0],email=cliente[1],tel=cliente[2],address_id=Address.objects.filter(street=direccion[0],city=direccion[1],code=direccion[2],country=direccion[3],type=direccion[4])[0].id).save()
+            Clients(name=cliente[0],email=cliente[1],tel=cliente[2],imageURL=cliente[3],address_id=Address.objects.filter(street=direccion[0],city=direccion[1],code=direccion[2],country=direccion[3],type=direccion[4])[0].id).save()
     except ValidationError as e:
         ValidationError(('Invalid value'), code='Hola')
     return HttpResponseRedirect('/listarClientes')

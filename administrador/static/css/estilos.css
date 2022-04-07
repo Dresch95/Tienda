@@ -10,8 +10,8 @@ h2{
     text-align: center;
 }
 h3{
-    margin-left: 15pt;
-    margin-top:15pt;
+    text-align: left;
+    margin-left:15pt;
 }
 a{
     text-decoration: none;
@@ -19,18 +19,37 @@ a{
 th,td{
     padding:8pt;
 }
+#imagenNuevoCliente{
+    margin:5pt;
+    margin-bottom:0pt;
+}
+#contenedorImgNuevoCliente{
+    width: 60%;
+    margin:0 19%;
+    text-align: center;
+    margin-bottom: 15pt;
+}
 #contenedorDatosCliente,#contenedorDireccionCliente{
     width:100%;
 }
+#contenedorImgNuevoCliente{
+    background-color: rgb(30, 30, 30);
+}
+#contenedorImagenNuevoCliente{
+    text-align: center;
+}
 #contenedorDatosCliente{
-    height: 55pt;
+    height: 80pt;
 }
 #contenedorDireccionCliente{
-    height: 90pt;
+    height: 100pt;
 }
 #contenedorInputsCrearCliente,#contenedorLabelsCrearCliente,#contenedorInputsDireccion,#contenedorLabelsDireccion{
     width:45%;
     float:left;
+}
+#contenedorURLNuevoCliente{
+    height: 100%;
 }
 #contenedorPrincipal{
     width:400pt;
@@ -53,7 +72,7 @@ label{
     margin-right:15pt;
     width: 150pt;
 }
-input[type="text"],[type="email"]{
+input[type="text"],[type="email"],[type="url"]{
     margin-top:3pt;
     width: 96.5%;
 }
@@ -72,6 +91,6 @@ select{
     width: 100%;
 }
 .centrarBoton{
-    margin:15pt;
+    margin:10pt;
     text-align: center;
 }

@@ -5,6 +5,9 @@ Detalles de Cliente
 {% endblock %}
 
 {% block 'contenido' %}
+{% if cliente.imageURL != '' %}
+<img src="{{cliente.imageURL}}">
+{% endif %}
 <p>Nombre: {{cliente.name}}</p>
 <p>Email: {{cliente.email}}</p>
 <p>Telefono: {{cliente.tel}}</p>

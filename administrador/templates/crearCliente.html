@@ -9,8 +9,15 @@ Crear cliente
     <form action="{% url 'crearCliente' %}" method="post">
         {% csrf_token %}
         <h2>Datos Cliente</h2>
+        <div id="contenedorImgNuevoCliente">
+            {% load static %}
+            <img src="{% static 'media/unknow.jpg' %}"
+                id="imagenNuevoCliente">
+        </div>
         <div id="contenedorDatosCliente">
             <div id="contenedorLabelsCrearCliente">
+                <label>URL Imagen</label>
+                <br>
                 <label>Nombre </label>
                 <br>
                 <label>Email </label>
@@ -18,6 +25,8 @@ Crear cliente
                 <label>Telefono </label>
             </div>
             <div id="contenedorInputsCrearCliente">
+                <input type="text" name="urlImagenNuevoCliente" id="urlImagenNuevoCliente">
+                <br>
                 <input type="text" name="nombreClienteNuevo">
                 <br>
                 <input type="email" name="emailClienteNuevo">
