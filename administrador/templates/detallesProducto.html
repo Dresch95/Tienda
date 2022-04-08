@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Detalles de Producto
+{% endblock %}
+
+{% block 'contenido' %}
+<div class="productoDetalles">
+    <div class="imagenProductoDetalles">
+        {% if producto.imageURL != '' %}
+        <img src="{{producto.imageURL}}" class="imagenProductoDetalles">
+        {% else %}
+        {% load static %}
+        <img src="{% static 'media/noimage.jpg' %}" class="imagenProductoDetalles">
+        {% endif %}
+    </div>
+    <div class="informacionProductoDetalles">
+        <p>Nombre: {{producto.name}}</p>
+        <p>Tamaño: 
+            {% if producto.size == 'BG' %}
+            Grande
+            {% elif productop.size == 'AV' %}
+            Mediano
+            {% elif producto.size == 'SM' %}
+            Pequeño
+            {% endif %}</p>
+        <p>Peso: {{producto.weight}}gr</p>
+        <p>Precio: {{producto.price}}€</p>
+        <a href="{% url 'modificarProductoVista' producto.id %}" class="botonEnlace">Modificar Producto</a>
+    </div>
+</div>
+{% endblock %}

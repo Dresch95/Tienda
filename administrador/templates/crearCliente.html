@@ -5,58 +5,58 @@ Crear cliente
 {% endblock %}
 
 {% block 'contenido' %}
-<div id="contenedorPrincipal">
+<div id="contenedorFormularioCrear">
     <form action="{% url 'crearCliente' %}" method="post">
         {% csrf_token %}
         <h2>Datos Cliente</h2>
-        <div id="contenedorImgNuevoCliente">
+        <div id="contenedorImgCliente">
             {% load static %}
             <img src="{% static 'media/unknow.jpg' %}"
-                id="imagenNuevoCliente">
+                id="imagenCliente">
         </div>
         <div id="contenedorDatosCliente">
-            <div id="contenedorLabelsCrearCliente">
+            <div id="contenedorLabelsCliente">
                 <label>URL Imagen</label>
                 <br>
-                <label>Nombre </label>
+                <label>Nombre</label><span class="campoRequerido"> *</span>
                 <br>
-                <label>Email </label>
+                <label>Email</label><span class="campoRequerido"> *</span>
                 <br>
-                <label>Telefono </label>
+                <label>Telefono</label>
             </div>
-            <div id="contenedorInputsCrearCliente">
-                <input type="text" name="urlImagenNuevoCliente" id="urlImagenNuevoCliente">
+            <div id="contenedorInputsCliente">
+                <input type="text" pattern="[^'\x22]{10,480}" placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen" name="urlImagenClienteNuevo" id="urlImagenCliente">
                 <br>
-                <input type="text" name="nombreClienteNuevo">
+                <input type="text" pattern="[a-zA-Z]{1,99}" placeholder="Pepe" name="nombreClienteNuevo" required>
                 <br>
-                <input type="email" name="emailClienteNuevo">
+                <input type="text" pattern="[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}" placeholder="ejemplo@ejemplo.com" name="emailClienteNuevo" required>
                 <br>
-                <input type="text" name="telefonoClienteNuevo">
+                <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteNuevo">
             </div>
         </div>
         <h3>Direccion </h3>
         <div id="contenedorDireccionCliente">
             <div id="contenedorLabelsDireccion">
-                <label>Calle y Numero </label>
+                <label>Calle y Numero</label><span class="campoRequerido"> *</span>
                 <br>
-                <label>Ciudad </label>
+                <label>Ciudad</label><span class="campoRequerido"> *</span>
                 <br>
-                <label>Código Postal </label>
+                <label>Código Postal</label>
                 <br>
-                <label>Pais </label>
+                <label>Pais</label><span class="campoRequerido"> *</span>
                 <br>
-                <label>Tipo</label>
+                <label>Tipo</label><span class="campoRequerido"> *</span>
             </div>
             <div id="contenedorInputsDireccion">
-                <input type="text" name="calleDireccionNueva">
+                <input type="text" pattern="[a-zA-Z0-9ºª-.,]{1,290}" placeholder="Calle Inventada 123, Nº15" name="calleDireccionNueva" required>
                 <br>
-                <input type="text" name="ciudadDireccionNueva">
+                <input type="text" pattern="[a-ZA-Z,.]{1,100}" placeholder="Madrid" name="ciudadDireccionNueva" required>
                 <br>
-                <input type="text" name="codigoDireccionNueva">
+                <input type="text" pattern="[0-9]{0,29}" placeholder="12345" name="codigoDireccionNueva">
                 <br>
-                <input type="text" name="paisDireccionNueva">
+                <input type="text" pattern="[a-ZA-Z,.]{1,150}" placeholder="España" name="paisDireccionNueva" required>
                 <br>
-                <select name="tiposDireccion" id="tiposDireccion">
+                <select name="tiposDireccion" id="tiposDireccion" required>
                     <option value="FL">Completa</option>
                     <option value="BL">Facturacion</option>
                     <option value="SH">Envio</option>
@@ -64,7 +64,7 @@ Crear cliente
             </div>
         </div>
         <div class="centrarBoton">
-            <input type="submit" value="Crear">
+            <input type="submit" value="Crear" class="botonEnlace">
         </div>
     </form>
 </div>

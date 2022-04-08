@@ -6,13 +6,16 @@ Detalles de Cliente
 
 {% block 'contenido' %}
 {% if cliente.imageURL != '' %}
-<img src="{{cliente.imageURL}}">
+<img src="{{cliente.imageURL}}" id="imagenCliente">
 {% endif %}
 <p>Nombre: {{cliente.name}}</p>
 <p>Email: {{cliente.email}}</p>
+{% if cliente.tel != '' %}
 <p>Telefono: {{cliente.tel}}</p>
+{% endif %}
 <p>Calle: {{direccion.street}}</p>
 <p>Ciudad: {{direccion.city}}</p>
 <p>Pais: {{direccion.country}}</p>
 <p>Tipo: {{direccion.type}}</p>
+<a href="{% url 'modificarClienteVista' cliente.id %}" class="botonEnlace">Modificar Cliente</a>
 {% endblock %}

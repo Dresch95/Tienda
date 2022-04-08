@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Listado de Pedidos
+{% endblock %}
+
+{% block 'contenido' %}
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Fecha de entrega</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in pedidos %}
+            <tr>
+                <td><a href="{% url 'detallesPedido' p.id %}">{{p.client}}</a></td>
+                <td>{{p.order_date}}</td>
+                <td>{{p.delivery_date}}</td>
+                <td><a href="{% url 'borrarPedido' p.id %}" class="botonEnlace Rojo">Eliminar</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="crearBoton">
+    <a href="{% url 'crearPedidoVista' %}" class="botonEnlace">Crear Pedido</a>
+</div>
+{% endblock %}

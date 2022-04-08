@@ -10,7 +10,6 @@ Listado de Clientes
         <tr>
             <th>Nombre</th>
             <th>Email</th>
-            <th>Telefono</th>
         </tr>
     </thead>
     <tbody>
@@ -18,11 +17,12 @@ Listado de Clientes
             <tr>
                 <td><a href="{% url 'detallesCliente' c.id %}">{{c.name}}</a></td>
                 <td>{{c.email}}</td>
-                <td>{{c.tel}}</td>
                 <td><a href="{% url 'borrarCliente' c.id %}" class="botonEnlace Rojo">Eliminar</a></td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
-<a href="{% url 'crearClienteVista' %}" class="botonEnlace">Crear Cliente</a>
+<div class="crearBoton">
+    <a href="{% url 'crearClienteVista' %}" class="botonEnlace">Crear Cliente</a>
+</div>
 {% endblock %}

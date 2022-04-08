@@ -1,6 +1,92 @@
+/*menu*/
+.topnav{
+    background-color: #333;
+    overflow: hidden;
+    margin-bottom: 15pt;
+}
+.topnav a{
+    float:left;
+    color:#f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+.topnav a:hover{
+    background-color: #ddd;
+    color:black;
+}
+.topnav a.active{
+    background-color: #04AA6D;
+    color:white;
+}
+/*footer*/
+footer{
+    background-color: #333;
+    color: white;
+    margin-top: 25pt;
+    bottom:0;
+    width: 100%;
+    height: 100pt;
+    padding-top: 5pt;
+}
+footer p{
+    margin-left: 5pt;
+}
+/*listaProductos*/
+.productoLista{
+    height: 250px;
+    width: 250px;
+}
+.imagenProductoLista{
+    background-color: rgb(30, 30, 30);
+}
+.imagenProducto{
+    height: 180px;
+    width:200px;
+    padding-top: 4pt;
+    width: 80%;
+    margin:0 9%;
+}
+.productoLista{
+    float:left;
+    margin:10pt;
+}
+.productoLista div label{
+    margin:0;
+}
+.contenedorNombreProductoLista{
+    text-align: center;
+}
+.precioProductoLista{
+    float:right;
+}
+/*productoDetalles*/
+.productoDetalles{
+    height: 500px;
+    width: 500px;
+}
+.imagenProductoDetalles{
+    background-color: rgb(30, 30, 30);
+    float:left;
+}
+.imagenProductoDetalles{
+    height: 300px;
+    width: 500px;
+    width: 80.9%;
+    margin:0 9%;
+}
+.informacionProductoDetalles{
+    margin-left:35pt;
+    height: 200px;
+}
+
+
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 14pt;
+    margin:0;
+    margin-bottom:0pt;
 }
 table{
     border:1px solid black;
@@ -15,15 +101,22 @@ h3{
 }
 a{
     text-decoration: none;
+    font-weight: bold;
+    color:rgba(53, 205, 53, 0.907);
+}
+a:hover{
+    color:rgba(213, 44, 44, 0.928);
 }
 th,td{
     padding:8pt;
 }
-#imagenNuevoCliente{
+#imagenCliente{
     margin:5pt;
     margin-bottom:0pt;
+    max-width: 200px;
+    max-height: 200px;
 }
-#contenedorImgNuevoCliente{
+#contenedorImgCliente{
     width: 60%;
     margin:0 19%;
     text-align: center;
@@ -32,10 +125,10 @@ th,td{
 #contenedorDatosCliente,#contenedorDireccionCliente{
     width:100%;
 }
-#contenedorImgNuevoCliente{
+#contenedorImgCliente{
     background-color: rgb(30, 30, 30);
 }
-#contenedorImagenNuevoCliente{
+#contenedorImagenCliente{
     text-align: center;
 }
 #contenedorDatosCliente{
@@ -44,36 +137,48 @@ th,td{
 #contenedorDireccionCliente{
     height: 100pt;
 }
-#contenedorInputsCrearCliente,#contenedorLabelsCrearCliente,#contenedorInputsDireccion,#contenedorLabelsDireccion{
+#contenedorInputsCliente,#contenedorLabelsCliente,#contenedorInputsDireccion,#contenedorLabelsDireccion{
     width:45%;
+    height: 140px;
     float:left;
 }
-#contenedorURLNuevoCliente{
+#contenedorURLCliente{
     height: 100%;
 }
-#contenedorPrincipal{
+#contenedorFormularioCrear,#contenedorFormularioModificar{
     width:400pt;
     margin:0 auto;
-    margin-top: 100pt;
     border:1px solid black;
+}
+#contenedorPrincipal{
+    min-height: 734px;
+    margin: 0 15pt;
+
+}
+.contenedorBotonEnlace{
+    left:15pt;
+    bottom:150px;
 }
 .botonEnlace{
     padding: 5pt;
     color:white;
     background-color: cornflowerblue;
 }
+.botonEnlace:hover{
+    color:rgba(255, 255, 255, 0.878);
+    background-color: rgb(39, 94, 198);
+}
 .Rojo{
     background-color: red;
 }
 label{
-    display:inline-block;
+    display: inline-block;
     margin-left:15pt;
-    margin-top:3pt;
-    margin-right:15pt;
-    width: 150pt;
+    margin-bottom:4pt;
 }
-input[type="text"],[type="email"],[type="url"]{
-    margin-top:3pt;
+input[type="text"],[type="email"],[type="url"],select{
+    height: 12pt;
+    margin-bottom: 3pt;
     width: 96.5%;
 }
 input[type="submit"]{
@@ -89,8 +194,13 @@ input[type="submit"]{
 }
 select{
     width: 100%;
+    height: 16pt;
 }
 .centrarBoton{
     margin:10pt;
     text-align: center;
+}
+.campoRequerido{
+    font-size: 15pt;
+    color:red;
 }

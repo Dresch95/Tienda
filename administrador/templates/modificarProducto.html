@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Crear producto
+{% endblock %}
+
+{% block 'contenido' %}
+<div id="contenedorFormularioCrear">
+    <form action="{% url 'modificarProducto' %}" method="post">
+        {% csrf_token %}
+        <h2>Datos Producto</h2>
+        <div id="contenedorImgProducto">
+            {% if producto.imageURL != '' %}
+            <img src="{{producto.imageURL}}" id="imagenProducto">
+            {% else %}
+            {% load static %}
+            <img src="{% static 'media/noimage.jpg' %}" id="imagenNuevoProducto">
+            {% endif %}
+        </div>
+        <div id="contenedorDatosProducto">
+            <div id="contenedorLabelsProducto">
+                <label>URL Imagen</label>
+                <br>
+                <label>Nombre</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Tamaño</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Peso(gr)</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Precio(€)</label><span class="campoRequerido"> *</span>
+            </div>
+            <div id="contenedorInputsProducto">
+                <input type="text" pattern="[^'\x22]{10,480}"
+                    placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen"
+                    name="urlImagenProductoModificar" id="urlImagenProducto">
+                <br>
+                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Tortilla" name="nombreProductoModificar"
+                    value="{{producto.name}}" required>
+                <br>
+                <select name="tiposTamanhoModificar" id="tiposTamanho" selected="{{producto.type}}" required>
+                    <option value="BG">Grande</option>
+                    <option value="AV">Mediana</option>
+                    <option value="SM">Pequeña</option>
+                </select>
+                <br>
+                <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificar"
+                    value="{{producto.weight}}" required>
+                <br>
+                <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificar"
+                    value="{{producto.price}}" required>
+                <input type="hidden" name="productoID" value="{{producto.id}}">
+            </div>
+        </div>
+        <div class="centrarBoton">
+            <input type="submit" value="Modificar" class="botonEnlace">
+        </div>
+    </form>
+</div>
+{% endblock %}

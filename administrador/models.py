@@ -14,7 +14,7 @@ class Address(models.Model):
     city=models.CharField(max_length=100,blank=False)
     code=models.CharField(max_length=30)
     country=models.CharField(max_length=150,blank=False)
-    type=models.CharField(address_types,max_length=2,default=FULL)
+    type=models.CharField(choices=address_types,max_length=2,default=FULL)
 
 class Clients(models.Model):
     name=models.CharField(max_length=100,blank=False)
@@ -37,7 +37,7 @@ class Products(models.Model):
         (SMALL, 'SMALL')
     )
     name=models.CharField(max_length=200,blank=False, unique=True)
-    size=models.EmailField(sizes,max_length=2,default=AVERAGE)
+    size=models.CharField(choices=sizes,max_length=2,default=AVERAGE)
     weight=models.FloatField(max_length=100)
     price=models.FloatField(max_length=100,blank=False)
     imageURL=models.URLField(max_length=500)

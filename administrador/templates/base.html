@@ -12,7 +12,19 @@
 </head>
 
 <body>
+    <nav class="topnav">
+        <a href="{% url 'listarClientes' %}">Clientes</a>
+        <a href="{% url 'listarProductos' %}">Productos</a>
+        <a href="{% url 'listarPedidos' %}">Pedidos</a>
+    </nav>
+    <div id="contenedorPrincipal">
     {% block 'contenido' %}{% endblock %}
+    </div>
+    <footer>
+        <p>Autor: Diego Carnero Leira</p>
+        <p>Telefono: 679 34 28 73</p>
+        <p>Email: diegocarneroleira@gmail.com</p>
+    </footer>
 </body>
 
 </html>

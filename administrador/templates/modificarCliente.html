@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Crear cliente
+{% endblock %}
+
+{% block 'contenido' %}
+<div id="contenedorFormularioModificar">
+    <form action="{% url 'modificarCliente' %}" method="post">
+        {% csrf_token %}
+        <h2>Datos Cliente</h2>
+        <div id="contenedorImgCliente">
+            {% if cliente.imageURL != '' %}
+            <img src="{{cliente.imageURL}}" id="imagenCliente">
+            {% else %}
+            {% load static %}
+            <img src="{% static 'media/unknow.jpg' %}"
+                id="imagenNuevoCliente">
+            {% endif %}
+        </div>
+        <div id="contenedorDatosCliente">
+            <div id="contenedorLabelsCliente">
+                <label>URL Imagen</label>
+                <br>
+                <label>Nombre</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Email</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Telefono</label>
+            </div>
+            <div id="contenedorInputsCliente">
+                <input type="text" pattern="[^'\x22]{10,480}" placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen" name="urlImagenClienteModificar" id="urlImagenCliente" value="{{cliente.imageURL}}">
+                <br>
+                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Pepe" name="nombreClienteModificar" value="{{cliente.name}}" required>
+                <br>
+                <input type="text" pattern="[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}" placeholder="ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" required>
+                <br>
+                <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteModificar" value="{{cliente.tel}}">
+                <input type="hidden" name="clienteID" value="{{cliente.id}}">
+            </div>
+        </div>
+        <div class="centrarBoton">
+            <input type="submit" value="Modificar">
+        </div>
+    </form>
+</div>
+{% endblock %}

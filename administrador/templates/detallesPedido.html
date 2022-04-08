@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Detalles de Pedido
+{% endblock %}
+
+{% block 'contenido' %}
+<p>Nombre: {{cliente.name}}</p>
+<p>Fecha: {{pedido.order_date}}</p>
+{% if pedido.delivery_date != '' %}
+<p>Fecha entrega: {{pedido.delivery_date}}</p>
+{% endif %}
+{% for p in productos_del_pedido %}
+    <div class="contenedorProductoPedido">
+        <p>{{p.name}}</p>
+        <p>{{p.price}}</p>
+    </div>
+{% endfor %}
+<a href="{% url 'modificarPedidoVista' pedido.id %}" class="botonEnlace">Modificar Pedido</a>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Crear pedido
+{% endblock %}
+
+{% block 'contenido' %}
+<div id="contenedorFormularioCrear">
+    <form action="{% url 'crearPedido' %}" method="post">
+        {% csrf_token %}
+        <h2>Datos Pedido</h2>
+        <div id="contenedorDatosPedido">
+            <div id="contenedorLabelsPedido">
+                <label>Cliente</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Fecha</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Fecha de entrega</label>
+            </div>
+            <div id="contenedorInputsPedido">
+                <select name="selectClientes" id="selectClientes" required>
+                    {% for c in clientes %}
+                        <option value="{{c.id}}">{{c.name}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="datetime" placeholder="01/01/2000" name="fecha" disabled>
+                <br>
+                <input type="datetime" pattern="[0-9-]{8,}" placeholder="01/01/2000" name="fechaEntregaPedidoNuevo" required>
+            </div>
+            <div id="productosPedidoNuevo">
+                <label>Producto</label>
+                <select name="productosDisponibles" id="productoEscogido">
+                    {% for producto in productos %}
+                    <option value="{{producto.id}}">{{producto.name}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label>Cantidad</label>
+                <input type="text" pattern="[0-9]{1,3}" name="cantidadProductoPedido" id="cantidadProductoPedido">
+                <button type="button" id="add_order" onclick="add();">Añadir Producto</button>
+            </div>
+        </div>
+        <div id="contenedorProductoPedido">
+        </div>
+        <div class="centrarBoton">
+            <input type="submit" value="Crear" class="botonEnlace">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function add(){
+        var contenedor=document.getElementById("contenedorProductoPedido");
+        var linea=document.createElement("span");
+        var producto=document.createElement("label");
+        var cantidad=document.createElement("label");
+
+        var productoEscogido=document.getElementById("productoEscogido");
+        var cantidadEscogida=document.getElementById("cantidadProductoPedido");
+        cantidad.innerText=cantidadEscogida.value;
+        cantidad.setAttribute("name","cantidadProducto");
+        producto.innerText=productoEscogido.options[(productoEscogido.value-1)].innerText;
+        producto.setAttribute("name","productoEscogido");
+        producto.setAttribute("value",productoEscogido.value);
+
+        linea.appendChild(producto);
+        linea.appendChild(cantidad);
+        contenedor.appendChild(linea);
+    }
+</script>
+{% endblock %}

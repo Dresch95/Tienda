@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %}
+Listado de Productos
+{% endblock %}
+
+{% block 'contenido' %}
+<div id="contenedorPrincipalProductos">
+    {% for p in productos %}
+    <a href="{% url 'detallesProducto' p.id %}">
+        <div class="productoLista">
+            <div class="imagenProductoLista">
+                {% if p.imageURL != '' %}
+                <img src="{{p.imageURL}}" class="imagenProducto">
+                {% else %}
+                {% load static %}
+                <img src="{% static 'media/noimage.jpg' %}" class="imagenProducto">
+                {% endif %}
+            </div>
+            <div class="informacionProductoLista">
+                <a href="{% url 'detallesProducto' p.id %}">
+                    <div class="contenedorNombreProductoLista">
+                        <label class="nombreProductoLista">{{p.name}}</label>
+                    </div>
+                </a>
+                <label class="tamanhoProductoLista">
+                    {% if p.size == 'BG' %}
+                    Grande
+                    {% elif p.size == 'AV' %}
+                    Mediano
+                    {% elif p.size == 'SM' %}
+                    Pequeño
+                    {% endif %}
+                </label>
+                <span class="precioProductoLista">
+                    <label>{{p.price}}€</label>
+                </span>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+<br>
+<div class="contenedorBotonEnlace">
+    <a href="{% url 'crearProductoVista' %}" class="botonEnlace">Crear Producto</a>
+</div>
+{% endblock %}
