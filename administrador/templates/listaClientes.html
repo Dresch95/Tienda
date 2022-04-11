@@ -17,6 +17,7 @@ Listado de Clientes
             <tr>
                 <td><a href="{% url 'detallesCliente' c.id %}">{{c.name}}</a></td>
                 <td>{{c.email}}</td>
+                <td><a href="{% url 'modificarClienteVista' c.id %}" class="botonEnlace Azul">Modificar</a></td>
                 <td><a href="{% url 'borrarCliente' c.id %}" class="botonEnlace Rojo">Eliminar</a></td>
             </tr>
         {% endfor %}

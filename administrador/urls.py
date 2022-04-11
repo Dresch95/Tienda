@@ -11,6 +11,12 @@ urlpatterns = [
     path('modificarCliente', views.modificarCliente,name='modificarCliente'),
     path('borrarCliente/<int:id>', views.borrarCliente,name='borrarCliente'),
 
+    path('crearDireccionVista/<int:id>', views.crearDireccionVista,name='crearDireccionVista'),
+    path('crearDireccion', views.crearDireccion,name='crearDireccion'),
+    path('modificarDireccionVista/<int:idDireccion>/<int:idCliente>', views.modificarDireccionVista,name='modificarDireccionVista'),
+    path('modificarDireccion/<int:id>', views.modificarDireccion,name='modificarDireccion'),
+    path('borrarDireccion/<int:id>', views.borrarDireccion,name='borrarDireccion'),
+
     path('listarProductos', views.listarProductos,name='listarProductos'),
     path('detallesProducto/<int:id>', views.detallesProducto,name='detallesProducto'),
     path('crearProductoVista', views.crearProductoVista,name='crearProductoVista'),

@@ -5,17 +5,51 @@ Detalles de Cliente
 {% endblock %}
 
 {% block 'contenido' %}
-{% if cliente.imageURL != '' %}
-<img src="{{cliente.imageURL}}" id="imagenCliente">
-{% endif %}
-<p>Nombre: {{cliente.name}}</p>
-<p>Email: {{cliente.email}}</p>
-{% if cliente.tel != '' %}
-<p>Telefono: {{cliente.tel}}</p>
-{% endif %}
-<p>Calle: {{direccion.street}}</p>
-<p>Ciudad: {{direccion.city}}</p>
-<p>Pais: {{direccion.country}}</p>
-<p>Tipo: {{direccion.type}}</p>
-<a href="{% url 'modificarClienteVista' cliente.id %}" class="botonEnlace">Modificar Cliente</a>
+<div id="detallesCliente">
+    <p>Nombre: {{cliente.name}}</p>
+    <p>Email: {{cliente.email}}</p>
+    {% if cliente.tel != '' %}
+    <p>Telefono: {{cliente.tel}}</p>
+    {% endif %}
+    <div id="contenedorTablaDirecciones">
+        <div id="tablaDirecciones">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Calle</th>
+                        <th>Ciudad</th>
+                        <th>Pais</th>
+                        <th>Codigo</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in direcciones %}
+                        <tr>
+                            <td>{{d.street}}</td>
+                            <td>{{d.city}}</td>
+                            <td>{{d.country}}</td>
+                            <td>{{d.code}}</td>
+                            {% if d.type == 'FL' %}
+                            <td>Completa</td>
+                            {% elif d.type == 'SH' %}
+                            <td>Envio</td>
+                            {% elif d.type == 'BL' %}
+                            <td>Facturacion</td>
+                            {% endif %}
+                            <td><a href="{% url 'modificarDireccionVista' d.id cliente.id %}" class="botonEnlace Azul">Modificar</a></td>
+                            <td><a href="{% url 'borrarDireccion' d.id %}" class="botonEnlace Rojo">Eliminar</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="botonTablaDirecciones">
+            <a href="{% url 'crearDireccionVista' cliente.id %}" class="botonEnlace Azul">Añadir Direccion</a>
+        </div>
+    </div>
+</div>
+<div id="botonModificarCliente">
+    <a href="{% url 'modificarClienteVista' cliente.id %}" class="botonEnlace Azul">Modificar Cliente</a>
+</div>
 {% endblock %}

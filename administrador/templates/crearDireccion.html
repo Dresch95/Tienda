@@ -1,32 +1,14 @@
 {% extends 'base.html' %}
 
 {% block 'titulo' %}
-Crear cliente
+Crear Direccion
 {% endblock %}
 
 {% block 'contenido' %}
 <div id="contenedorFormularioCrear">
-    <form action="{% url 'crearCliente' %}" method="post">
+    <form action="{% url 'crearDireccion' %}" method="post">
         {% csrf_token %}
-        <h2>Datos Cliente</h2>
-        <div id="contenedorDatosCliente">
-            <div id="contenedorLabelsCliente">
-                <label>Nombre</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Email</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Telefono</label>
-            </div>
-            <div id="contenedorInputsCliente">
-                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Pepe" name="nombreClienteNuevo" required>
-                <br>
-                <input type="text" pattern="[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}"
-                    placeholder="ejemplo@ejemplo.com" name="emailClienteNuevo" required>
-                <br>
-                <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteNuevo">
-            </div>
-        </div>
-        <h3>Direccion</h3>
+        <h2>Direccion</h2>
         <div id="contenedorDireccionCliente">
             <div id="contenedorLabelsDireccion">
                 <label>Calle y Numero</label><span class="campoRequerido"> *</span>
@@ -36,6 +18,8 @@ Crear cliente
                 <label>Código Postal</label>
                 <br>
                 <label>Pais</label><span class="campoRequerido"> *</span>
+                <br>
+                <label>Tipo</label><span class="campoRequerido"> *</span>
             </div>
             <div id="contenedorInputsDireccion">
                 <input type="text" pattern="[a-zA-Z0-9ºª-.,]{1,290}" placeholder="Calle Inventada 123, Nº15"
@@ -47,8 +31,15 @@ Crear cliente
                 <input type="text" pattern="[0-9]{0,29}" placeholder="12345" name="codigoDireccionNueva">
                 <br>
                 <input type="text" pattern="[a-ZA-Z,.]{1,150}" placeholder="España" name="paisDireccionNueva" required>
+                <br>
+                <select name="tipoDireccion" id="tipoDireccion">
+                    <option value="FL">Completa</option>
+                    <option value="SH">Envio</option>
+                    <option value="BL">Facturacion</option>
+                </select>
             </div>
         </div>
+        <input type="hidden" value="{{idCliente}}" name="cliente">
         <div class="centrarBoton">
             <input type="submit" value="Crear" class="botonEnlace">
         </div>

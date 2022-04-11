@@ -102,7 +102,7 @@ h3{
 a{
     text-decoration: none;
     font-weight: bold;
-    color:rgba(53, 205, 53, 0.907);
+    color:cornflowerblue;
 }
 a:hover{
     color:rgba(213, 44, 44, 0.928);
@@ -110,26 +110,29 @@ a:hover{
 th,td{
     padding:8pt;
 }
-#imagenCliente{
-    margin:5pt;
-    margin-bottom:0pt;
-    max-width: 200px;
-    max-height: 200px;
+#detallesCliente{
+    border:1px solid black;
+    margin-left:15pt;
+    margin-top:15pt;
 }
-#contenedorImgCliente{
-    width: 60%;
-    margin:0 19%;
-    text-align: center;
-    margin-bottom: 15pt;
+#contenedorTablaDirecciones{
+    margin:20pt;
+}
+#tablaDirecciones{
+    width: 80%;
+    float:left;
+}
+#botonTablaDirecciones{
+    margin:15pt;
+    float:left;
+}
+#botonModificarCliente{
+    height: 30pt;
+    width:100pt;
+    margin:20pt;
 }
 #contenedorDatosCliente,#contenedorDireccionCliente{
     width:100%;
-}
-#contenedorImgCliente{
-    background-color: rgb(30, 30, 30);
-}
-#contenedorImagenCliente{
-    text-align: center;
 }
 #contenedorDatosCliente{
     height: 80pt;
@@ -141,9 +144,6 @@ th,td{
     width:45%;
     height: 140px;
     float:left;
-}
-#contenedorURLCliente{
-    height: 100%;
 }
 #contenedorFormularioCrear,#contenedorFormularioModificar{
     width:400pt;
@@ -162,15 +162,22 @@ th,td{
 .botonEnlace{
     padding: 5pt;
     color:white;
+}
+.Azul{
     background-color: cornflowerblue;
 }
-.botonEnlace:hover{
+.Azul:hover{
     color:rgba(255, 255, 255, 0.878);
     background-color: rgb(39, 94, 198);
 }
 .Rojo{
     background-color: red;
 }
+.Rojo:hover{
+    color:rgba(255, 255, 255, 0.878);
+    background-color: rgb(181, 0, 0);
+}
+
 label{
     display: inline-block;
     margin-left:15pt;

@@ -17,25 +17,17 @@ def listarClientes(request):
     return render(request,'listaClientes.html',{"clientes":clientes})
 
 def detallesCliente(request,id):
+    direcciones=[]
     cliente=Clients.objects.get(id=int(id))
-    direccion=Address.objects.get(id=int(cliente.address_id))
-    return render(request,'detallesCliente.html',{"cliente":cliente,"direccion":direccion})
+    direcciones=Address.objects.filter(client=int(cliente.id))
+    return render(request,'detallesCliente.html',{"cliente":cliente,"direcciones":direcciones})
 
 def crearClienteVista(request):
     return render(request,'crearCliente.html')
 
 def crearCliente(request):
-    direccion=[]
-    try:
-        direccion.append(request.POST['calleDireccionNueva'])
-        direccion.append(request.POST['ciudadDireccionNueva'])
-        direccion.append(request.POST['codigoDireccionNueva'])
-        direccion.append(request.POST['paisDireccionNueva'])
-        direccion.append(request.POST['tiposDireccion'])
-        Address(street=direccion[0],city=direccion[1],code=direccion[2],country=direccion[3],type=direccion[4]).save()
-        Clients(name=request.POST['nombreClienteNuevo'],email=request.POST['emailClienteNuevo'],tel=request.POST['telefonoClienteNuevo'],imageURL=request.POST['urlImagenClienteNuevo'],address_id=Address.objects.filter(street=direccion[0],city=direccion[1],code=direccion[2],country=direccion[3],type=direccion[4])[0].id).save()
-    except ValidationError as e:
-        ValidationError(('Invalid value'), code='Hola')
+    Clients(name=request.POST['nombreClienteNuevo'],email=request.POST['emailClienteNuevo'],tel=request.POST['telefonoClienteNuevo']).save()
+    Address(client=Clients.objects.filter(name=request.POST['nombreClienteNuevo'],email=request.POST['emailClienteNuevo'],tel=request.POST['telefonoClienteNuevo'])[0],street=request.POST['calleDireccionNueva'],city=request.POST['ciudadDireccionNueva'],code=request.POST['codigoDireccionNueva'],country=request.POST['paisDireccionNueva'],type='FL').save()
     return HttpResponseRedirect('/listarClientes')
 
 def modificarClienteVista(request,id):
@@ -44,12 +36,36 @@ def modificarClienteVista(request,id):
 
 def modificarCliente(request):
     id=request.POST['clienteID']
-    Clients.objects.filter(pk=int(id)).update(name=request.POST['nombreClienteModificar'],email=request.POST['emailClienteModificar'],tel=request.POST['telefonoClienteModificar'],imageURL=request.POST['urlImagenClienteModificar'])
+    Clients.objects.filter(pk=int(id)).update(name=request.POST['nombreClienteModificar'],email=request.POST['emailClienteModificar'],tel=request.POST['telefonoClienteModificar'])
     return HttpResponseRedirect(f'/detallesCliente/{id}')
 
 def borrarCliente(request,id):
     Clients.objects.get(pk=id).delete()
     return HttpResponseRedirect('/listarClientes')
+
+#DIRECCIONES
+def crearDireccionVista(request,id):
+    return render(request,'crearDireccion.html',{"idCliente":id})
+
+def crearDireccion(request):
+    id=request.POST['cliente']
+    Address(client=Clients.objects.get(pk=int(id)),street=request.POST['calleDireccionNueva'],city=request.POST['ciudadDireccionNueva'],code=request.POST['codigoDireccionNueva'],country=request.POST['paisDireccionNueva'],type=request.POST['tipoDireccion']).save()
+    return HttpResponseRedirect(f'/detallesCliente/{id}')
+
+def modificarDireccionVista(request,idDireccion,idCliente):
+    direccion=Address.objects.get(pk=int(idDireccion))
+    return render(request,'modificarDireccion.html',{"direccion":direccion,"idCliente":idCliente})
+
+def modificarDireccion(request,id):
+    Address.objects.filter(pk=int(request.POST['direccion'])).update(street=request.POST['calleDireccionModificar'],city=request.POST['ciudadDireccionModificar'],code=request.POST['codigoDireccionModificar'],country=request.POST['paisDireccionModificar'],type=request.POST['tipoDireccion'])
+    return HttpResponseRedirect(f'/detallesCliente/{id}')
+
+def borrarDireccion(request,id):
+    direccion=Address.objects.get(pk=id)
+    cliente=direccion.client.id
+    direccion.delete()
+    return HttpResponseRedirect(f'/detallesCliente/{cliente}')
+
 
 #PRODUCTOS
 def listarProductos(request):
