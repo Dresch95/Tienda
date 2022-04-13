@@ -6,7 +6,7 @@ Modificar Direccion
 
 {% block 'contenido' %}
 <div id="contenedorFormularioModificar">
-    <form action="{% url 'modificarDireccion' idCliente %}" method="post">
+    <form action="{% url 'modificarDireccion' %}" method="post">
         {% csrf_token %}
         <h2>Direccion</h2>
         <div id="contenedorDireccionCliente">
@@ -18,8 +18,6 @@ Modificar Direccion
                 <label>Código Postal</label>
                 <br>
                 <label>Pais</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Tipo</label><span class="campoRequerido"> *</span>
             </div>
             <div id="contenedorInputsDireccion">
                 <input type="text" pattern="[a-zA-Z0-9ºª-.,]{1,290}" placeholder="Calle Inventada 123, Nº15"
@@ -31,17 +29,11 @@ Modificar Direccion
                 <input type="text" pattern="[0-9]{0,29}" placeholder="12345" name="codigoDireccionModificar" value="{{direccion.code}}">
                 <br>
                 <input type="text" pattern="[a-ZA-Z,.]{1,150}" placeholder="España" name="paisDireccionModificar" value="{{direccion.country}}" required>
-                <br>
-                <select name="tipoDireccion" id="tipoDireccion">
-                    <option value="FL">Completa</option>
-                    <option value="SH">Envio</option>
-                    <option value="BL">Facturacion</option>
-                </select>
             </div>
             <input type="hidden" value="{{direccion.id}}" name="direccion">
         </div>
         <div class="centrarBoton">
-            <a href="{% url 'detallesCliente' direccion.client.id %}" class="botonEnlace Rojo">Cancelar</a>
+            <a href="{% url 'detallesCliente' cliente.id %}" class="botonEnlace Rojo">Cancelar</a>
             <input type="submit" value="Modificar" class="botonEnlace Azul">
         </div>
     </form>

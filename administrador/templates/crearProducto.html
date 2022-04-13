@@ -6,40 +6,71 @@ Crear producto
 
 {% block 'contenido' %}
 <div id="contenedorFormularioCrear">
-    <form action="{% url 'crearProducto' %}" method="post">
+    <form action="{% url 'crearProducto' %}" method="post" onsubmit="return validarInformacion();"
+        id="formularioCrearProducto">
         {% csrf_token %}
         <h2>Datos Producto</h2>
         <div id="contenedorImgProducto">
             {% load static %}
-            <img src="{% static 'media/noimage.jpg' %}"
-                id="imagenProducto">
+            <img src="{% static 'media/noimage.jpg' %}" id="imagenProducto">
         </div>
-        <div id="contenedorDatosProducto">
-            <div id="contenedorLabelsProducto">
+        <div class="botonCargarImagenProductoNuevo">
+            <button type="button" class="botonCargar" onclick="cargarImagen();">Cargar Imagen</button>
+        </div>
+        <div class="contenedorDatosProducto">
+            <div class="contenedorLabelsProducto">
                 <label>URL Imagen</label>
                 <br>
                 <label>Nombre</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Tamaño</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Peso(gr)</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Precio(€)</label><span class="campoRequerido"> *</span>
             </div>
-            <div id="contenedorInputsProducto">
-                <input type="text" pattern="[^'\x22]{10,480}" placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen" name="urlImagenProductoNuevo" id="urlImagenProducto">
+            <div class="contenedorInputsProducto">
+                <input type="text" pattern="[^'\x22]{10,480}"
+                    placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen"
+                    name="urlImagenProductoNuevo" id="urlImagenProducto">
                 <br>
-                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Tortilla" name="nombreProductoNuevo" required>
-                <br>
-                <select name="tiposTamanho" id="tiposTamanho" required>
-                    <option value="BG">Grande</option>
-                    <option value="AV">Mediana</option>
-                    <option value="SM">Pequeña</option>
-                </select>
-                <br>
-                <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoNuevo" required>
-                <br>
-                <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoNuevo" required>
+                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Tortilla" name="nombreProductoNuevo"
+                    id="nombreProductoNuevo" required>
+            </div>
+        </div>
+        <div class="detallesProductoNuevo">
+            <div class="contenedorDatosProducto">
+                <h3>Estándar</h3>
+                <div class="contenedorLabelsProducto">
+                    <label>Precio</label><span class="campoRequerido"> *</span>
+                    <br>
+                    <label>Peso</label>
+                </div>
+                <div class="contenedorInputsProducto">
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoNuevoEstandar" required>
+                    <br>
+                    <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoNuevoEstandar">
+                </div>
+            </div>
+            <div class="contenedorDatosProducto">
+                <h3>Pequeño</h3>
+                <div class="contenedorLabelsProducto">
+                    <label>Precio</label>
+                    <br>
+                    <label>Peso</label>
+                </div>
+                <div class="contenedorInputsProducto">
+                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoNuevoPequenho">
+                    <br>
+                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoNuevoPequenho">
+                </div>
+            </div>
+            <div class="contenedorDatosProducto">
+                <h3>Grande</h3>
+                <div class="contenedorLabelsProducto">
+                    <label>Precio</label>
+                    <br>
+                    <label>Peso</label>
+                </div>
+                <div class="contenedorInputsProducto">
+                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoNuevoGrande">
+                    <br>
+                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoNuevoGrande">
+                </div>
             </div>
         </div>
         <div class="centrarBoton">
@@ -47,4 +78,36 @@ Crear producto
         </div>
     </form>
 </div>
+<script>
+    $("#formularioCrearProducto").submit(function(e) {
+        e.preventDefault();
+        var producto = document.getElementById('nombreProductoNuevo').value;
+        if (producto != "") {
+            $.ajax({
+                url: "{% url 'comprobarProducto' %}",
+                type: 'GET',
+                data: { 'producto': producto },
+                dataType: 'json',
+                success: function (data) {
+
+                }
+            }).done(function (response) {
+                if (!response['producto_existe']) {
+                    document.getElementById("formularioCrearProducto").submit();
+                }else{
+                    document.getElementById("nombreProductoNuevo").value="";
+                }
+            })
+                .fail(function () {
+                    console.log("failed");
+                })
+        }
+    });
+    function cargarImagen(){
+        var url=document.getElementById("urlImagenProducto").value;
+        if(url!=''){
+            document.getElementById("imagenProducto").setAttribute("src",url);
+        }
+    }
+</script>
 {% endblock %}

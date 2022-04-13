@@ -23,18 +23,6 @@ Listado de Productos
                         <label class="nombreProductoLista">{{p.name}}</label>
                     </div>
                 </a>
-                <label class="tamanhoProductoLista">
-                    {% if p.size == 'BG' %}
-                    Grande
-                    {% elif p.size == 'AV' %}
-                    Mediano
-                    {% elif p.size == 'SM' %}
-                    Pequeño
-                    {% endif %}
-                </label>
-                <span class="precioProductoLista">
-                    <label>{{p.price}}€</label>
-                </span>
             </div>
         </div>
     </a>
@@ -42,6 +30,6 @@ Listado de Productos
 </div>
 <br>
 <div class="contenedorBotonEnlace">
-    <a href="{% url 'crearProductoVista' %}" class="botonEnlace">Crear Producto</a>
+    <a href="{% url 'crearProductoVista' %}" class="botonEnlace Azul">Crear Producto</a>
 </div>
 {% endblock %}

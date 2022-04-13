@@ -5,26 +5,22 @@ Listado de Pedidos
 {% endblock %}
 
 {% block 'contenido' %}
-<table>
-    <thead>
-        <tr>
-            <th>Cliente</th>
-            <th>Fecha</th>
-            <th>Fecha de entrega</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for p in pedidos %}
-            <tr>
-                <td><a href="{% url 'detallesPedido' p.id %}">{{p.client}}</a></td>
-                <td>{{p.order_date}}</td>
-                <td>{{p.delivery_date}}</td>
-                <td><a href="{% url 'borrarPedido' p.id %}" class="botonEnlace Rojo">Eliminar</a></td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<div class="crearBoton">
-    <a href="{% url 'crearPedidoVista' %}" class="botonEnlace">Crear Pedido</a>
+{% for p in pedidos %}
+<div class="detallesPedido">
+    <p>{{p.client.name}}</p>
+    <p>{{p.order_date}}</p>
+    <a href="{% url 'modificarPedidoVista' p.id %}">Modificar</a>
+    <a href="{% url 'eliminarPedido' p.id %}">Eliminar</a>
+    {% if p.unable %}
+    <td><button value="{{p.id}}" id="modificarEstadoPedido" onclick="modificarEstadoDelPedido(event);"
+            class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
+    {% else %}
+    <td><button value="{{p.id}}" id="modificarEstadoPedido" onclick="modificarEstadoDelPedido(event);"
+            class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
+    {% endif %}
+</div>
+{% endfor %}
+<div class="contenedorBotonEnlace">
+    <a href="{% url 'crearPedidoVista' %}" class="botonEnlace Azul">Crear Pedido</a>
 </div>
 {% endblock %}

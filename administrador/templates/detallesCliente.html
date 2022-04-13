@@ -6,11 +6,13 @@ Detalles de Cliente
 
 {% block 'contenido' %}
 <div id="detallesCliente">
-    <p>Nombre: {{cliente.name}}</p>
-    <p>Email: {{cliente.email}}</p>
-    {% if cliente.tel != '' %}
-    <p>Telefono: {{cliente.tel}}</p>
-    {% endif %}
+    <div id="datosDetallesCliente">
+        <p>Nombre: {{cliente.name}}</p>
+        <p>Email: {{cliente.email}}</p>
+        {% if cliente.tel != '' %}
+        <p>Telefono: {{cliente.tel}}</p>
+        {% endif %}
+    </div>
     <div id="contenedorTablaDirecciones">
         <div id="tablaDirecciones">
             <table>
@@ -20,7 +22,6 @@ Detalles de Cliente
                         <th>Ciudad</th>
                         <th>Pais</th>
                         <th>Codigo</th>
-                        <th>Tipo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,14 +31,7 @@ Detalles de Cliente
                             <td>{{d.city}}</td>
                             <td>{{d.country}}</td>
                             <td>{{d.code}}</td>
-                            {% if d.type == 'FL' %}
-                            <td>Completa</td>
-                            {% elif d.type == 'SH' %}
-                            <td>Envio</td>
-                            {% elif d.type == 'BL' %}
-                            <td>Facturacion</td>
-                            {% endif %}
-                            <td><a href="{% url 'modificarDireccionVista' d.id cliente.id %}" class="botonEnlace Azul">Modificar</a></td>
+                            <td><a href="{% url 'modificarDireccionVista' d.id %}" class="botonEnlace Azul">Modificar</a></td>
                             <td><a href="{% url 'borrarDireccion' d.id %}" class="botonEnlace Rojo">Eliminar</a></td>
                         </tr>
                     {% endfor %}

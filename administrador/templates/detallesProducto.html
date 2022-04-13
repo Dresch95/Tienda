@@ -16,17 +16,39 @@ Detalles de Producto
     </div>
     <div class="informacionProductoDetalles">
         <p>Nombre: {{producto.name}}</p>
-        <p>Tamaño: 
-            {% if producto.size == 'BG' %}
-            Grande
-            {% elif productop.size == 'AV' %}
-            Mediano
-            {% elif producto.size == 'SM' %}
-            Pequeño
-            {% endif %}</p>
-        <p>Peso: {{producto.weight}}gr</p>
-        <p>Precio: {{producto.price}}€</p>
-        <a href="{% url 'modificarProductoVista' producto.id %}" class="botonEnlace">Modificar Producto</a>
+        <div id="tablaDirecciones">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tamaño</th>
+                        <th>Peso(gr)</th>
+                        <th>Precio(€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in detalles %}
+                    {% if d.price != 0 %}
+                        <tr>
+                            {% if d.size == 'BG' %}
+                            <td>Grande</td>
+                            {% elif d.size == 'AV' %}
+                            <td>Estandar</td>
+                            {% elif d.size == 'SM' %}
+                            <td>Pequeño</td>
+                            {% endif %}
+                            {% if d.weight is not Null %}
+                            <td>{{d.weight}}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            <td>{{d.price}}</td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{% url 'modificarProductoVista' producto.id %}" class="botonEnlace Azul">Modificar Producto</a>
     </div>
 </div>
 {% endblock %}

@@ -5,50 +5,189 @@ Crear pedido
 {% endblock %}
 
 {% block 'contenido' %}
-<div id="contenedorFormularioCrear">
-    <form action="{% url 'crearPedido' %}" method="post">
-        {% csrf_token %}
-        <h2>Datos Pedido</h2>
-        <div id="contenedorDatosPedido">
-            <div id="contenedorLabelsPedido">
-                <label>Cliente</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Fecha</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Fecha de entrega</label>
+<div class="contenedorPedido">
+    <div id="contenedorPrincipalProductos">
+        {% for pr in productos %}
+        <div class="productoLista">
+            <div class="imagenProductoLista">
+                {% if pr.product.imageURL != '' %}
+                <img src="{{pr.product.imageURL}}" class="imagenProducto">
+                {% else %}
+                {% load static %}
+                <img src="{% static 'media/noimage.jpg' %}" class="imagenProducto">
+                {% endif %}
             </div>
-            <div id="contenedorInputsPedido">
-                <select name="selectClientes" id="selectClientes" required>
-                    {% for c in clientes %}
+            <div class="informacionProductoLista">
+                <div class="nombreProductoLista">
+                    <label>{{pr.product.name}}</label>
+                </div>
+                <div class="detallesProductoLista">
+                    <label class="tamanhoProductoLista">{% if pr.size == 'BG' %}Grande{% elif pr.size == 'AV' %}Estandar{% elif pr.size == 'SM' %}Pequeño{% endif %}</label>
+                    <label class="precioProductoLista">€</label><label class="precioProductoLista">{{pr.price}}</label>
+                </div>
+            </div>
+            <div class="modificarCantidadProducto">
+                <button type="button" value="{{pr.id}}" onclick="quitarProducto(event);"
+                    class="noPuedoQuitar">-</button>
+                <button type="button" value="{{pr.id}}" onclick="anhadirProducto(event);"
+                    class="anhadirProducto">+</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="contenedorDatosClientePedido">
+        <form action="{% url 'crearPedido' %}" method="post">
+            {% csrf_token %}
+            <h2>Datos Pedido</h2>
+            <div class="contenedorDatosPedido">
+                <div class="contenedorLabelsPedido">
+                    <label>Cliente</label><span class="campoRequerido"> *</span>
+                    <br>
+                    <label>Direccion Envio</label><span class="campoRequerido"> *</span>
+                    <br>
+                    <label>Direccion Facturacion</label><span class="campoRequerido"> *</span>
+                </div>
+                <div class="contenedorInputsPedido">
+                    <select name="selectClientes" id="selectClientes" onchange="cargarDirecciones(event);" required>
+                        {% for c in clientes %}
                         <option value="{{c.id}}">{{c.name}}</option>
-                    {% endfor %}
-                </select>
-                <br>
-                <input type="datetime" placeholder="01/01/2000" name="fecha" disabled>
-                <br>
-                <input type="datetime" pattern="[0-9-]{8,}" placeholder="01/01/2000" name="fechaEntregaPedidoNuevo" required>
+                        {% endfor %}
+                    </select>
+                    <select name="selectEnvio" id="selectEnvio" required>
+                    </select>
+                    <select name="selectFacturacion" id="selectFacturacion" required>
+                    </select>
+                </div>
             </div>
-            <div id="productosPedidoNuevo">
-                <label>Producto</label>
-                <select name="productosDisponibles" id="productoEscogido">
-                    {% for producto in productos %}
-                    <option value="{{producto.id}}">{{producto.name}}</option>
-                    {% endfor %}
-                </select>
-                <br>
-                <label>Cantidad</label>
-                <input type="text" pattern="[0-9]{1,3}" name="cantidadProductoPedido" id="cantidadProductoPedido">
-                <button type="button" id="add_order" onclick="add();">Añadir Producto</button>
+            <div id="productosDelPedidoNuevo">
+                <h3>Productos</h3>
+                <div id="listaProductosPedido">
+
+                </div>
+                <div id="totalListaPedidos">
+                    <label class="totalLabel">TOTAL</label>
+                    <label class="totalLabel" id="precioTotalDelPedido">0</label>
+                    <label class="totalLabel">€</label>
+                </div>
             </div>
-        </div>
-        <div id="contenedorProductoPedido">
-        </div>
-        <div class="centrarBoton">
-            <input type="submit" value="Crear" class="botonEnlace">
-        </div>
-    </form>
+            <div class="centrarBoton">
+                <input type="submit" value="Hacer Pedido" class="botonEnlace">
+            </div>
+        </form>
+    </div>
 </div>
-<script type="text/javascript">
-    
+<script>
+    function cargarDirecciones(e){
+        $("#selectEnvio").empty();
+        $("#selectFacturacion").empty();
+        var select1=document.getElementById("selectEnvio");
+        var select2=document.getElementById("selectFacturacion");
+        $.ajax({
+                url: "{% url 'direccionesCliente' %}",
+                type: 'GET',
+                data: { 'idCliente': e.target.value },
+                dataType: 'json',
+                success: function (data) {
+                }
+            }).done(function (response) {
+                var lista=response['listaDirecciones'];
+                for(let i = 0; i < lista.length; i++){
+                    let opcion1=document.createElement("option");
+                    let opcion2=document.createElement("option");
+                    opcion1.setAttribute("value",lista[i][0]);
+                    opcion1.textContent=lista[i][1];
+                    opcion2.setAttribute("value",lista[i][0]);
+                    opcion2.textContent=lista[i][1];
+                    select1.appendChild(opcion1);
+                    select2.appendChild(opcion2);
+                }
+            })
+                .fail(function () {
+                    console.log("failed");
+                })
+    }
+    function anhadirProducto(event) {
+        var contenedor = document.getElementById("listaProductosPedido");
+        var yaExiste = false;
+        var total=document.getElementById("precioTotalDelPedido");
+        for (var i = 0; i < contenedor.children.length; i++) {
+            if (contenedor.children[i].children[0].children[0].value == event.target.value) {
+                contenedor.children[i].children[1].children[0].value++;
+                contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)+parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                yaExiste=true;
+            }
+        }
+        if (!yaExiste) {
+            var contenedorProducto=document.createElement("div");
+            var contenedorInfoProducto=document.createElement("div");
+            var contenedorCantidadProducto=document.createElement("div");
+            var producto = document.createElement("input");
+            var cantidad = document.createElement("input");
+            var totalProducto = document.createElement("label");
+            var nombreProducto = document.createElement("label");
+            var tamanhoProducto = document.createElement("label");
+            var precioProducto = document.createElement("label");
+            var moneda = document.createElement("label");
+            var moneda2 = document.createElement("label");
+
+            contenedorProducto.setAttribute("class","contenedorDatosProducto");
+            contenedorInfoProducto.setAttribute("class","contenedorLabelsProducto");
+            contenedorCantidadProducto.setAttribute("class","contenedorInputsProducto");
+
+            producto.setAttribute("type", "hidden");
+            producto.setAttribute("value", event.target.value);
+            producto.setAttribute("name","producto");
+
+            nombreProducto.textContent=event.target.parentElement.parentElement.children[1].children[0].children[0].textContent;
+            tamanhoProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[0].textContent;
+            precioProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[2].textContent;
+            moneda.textContent="€";
+            moneda2.textContent="€";
+            totalProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[2].textContent;
+            totalProducto.setAttribute("class","totalPrecioProducto");
+            moneda2.setAttribute("class","totalPrecioProducto");
+            moneda.setAttribute("class","totalPrecioProducto");
+            precioProducto.setAttribute("class","totalPrecioProducto");
+
+            cantidad.setAttribute("type", "text");
+            cantidad.setAttribute("disabled", true);
+            cantidad.setAttribute("value", 1);
+            cantidad.setAttribute("name","cantidad");
+            cantidad.setAttribute("class","cantidadProductoPedido");
+
+            contenedor.appendChild(contenedorProducto);
+            contenedorProducto.appendChild(contenedorInfoProducto);
+            contenedorProducto.appendChild(contenedorCantidadProducto);
+
+            contenedorInfoProducto.appendChild(producto);
+            contenedorInfoProducto.appendChild(nombreProducto);
+            contenedorInfoProducto.appendChild(tamanhoProducto);
+            contenedorCantidadProducto.appendChild(cantidad);
+            contenedorCantidadProducto.appendChild(moneda2);
+            contenedorCantidadProducto.appendChild(totalProducto);
+            contenedorInfoProducto.appendChild(moneda);
+            contenedorInfoProducto.appendChild(precioProducto);
+            event.target.parentElement.children[0].setAttribute("class","quitarProducto");
+            total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+        }
+    }
+    function quitarProducto(event){
+        var contenedor = document.getElementById("listaProductosPedido");
+        var total=document.getElementById("precioTotalDelPedido");
+        for (var i = 0; i < contenedor.children.length; i++) {
+            if (contenedor.children[i].children[0].children[0].value == event.target.value) {
+                if(contenedor.children[i].children[1].children[0].value==1){
+                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                    contenedor.removeChild(contenedor.children[i]);
+                    event.target.setAttribute("class","noPuedoQuitar");
+                }else{
+                    contenedor.children[i].children[1].children[0].value--;
+                    contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)-parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                }
+            }
+        }
+    }
 </script>
 {% endblock %}

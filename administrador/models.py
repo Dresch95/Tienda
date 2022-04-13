@@ -11,20 +11,11 @@ class Clients(models.Model):
         return super().__str__()
 
 class Address(models.Model):
-    FULL = 'FL'
-    SHIPPING = 'SH'
-    BILLING = 'BL'
-    address_types = (
-        (SHIPPING, 'SHIPPING'),
-        (BILLING, 'BILLING'),
-        (FULL, 'FULL')
-    )
     client=models.ForeignKey(Clients,on_delete=models.CASCADE,blank=False)
     street=models.CharField(max_length=300,blank=False)
     city=models.CharField(max_length=100,blank=False)
     code=models.CharField(max_length=30)
     country=models.CharField(max_length=150,blank=False)
-    type=models.CharField(choices=address_types,max_length=2,default=FULL)
 
     def __str__(self) -> str:
         return super().__str__()
@@ -47,9 +38,12 @@ class Products_Details(models.Model):
     )
     product=models.ForeignKey(Products,on_delete=models.CASCADE,blank=False)
     size=models.CharField(choices=sizes,max_length=2,default=AVERAGE)
-    weight=models.FloatField(max_length=100)
+    weight=models.FloatField(max_length=100,null=True)
     price=models.FloatField(max_length=100,blank=False)
     unable=models.BooleanField(blank=False,default=False)
+
+    class Meta:
+        unique_together = (("product", "size"),)
 
     def __str__(self) -> str:
         return super().__str__()

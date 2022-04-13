@@ -35,7 +35,7 @@ footer p{
 }
 /*listaProductos*/
 .productoLista{
-    height: 250px;
+    height: 280px;
     width: 250px;
 }
 .imagenProductoLista{
@@ -46,11 +46,12 @@ footer p{
     width:200px;
     padding-top: 4pt;
     width: 80%;
-    margin:0 9%;
+    margin:0 10%;
 }
 .productoLista{
     float:left;
     margin:10pt;
+    overflow-y: auto;
 }
 .productoLista div label{
     margin:0;
@@ -69,17 +70,162 @@ footer p{
 .imagenProductoDetalles{
     background-color: rgb(30, 30, 30);
     float:left;
-}
-.imagenProductoDetalles{
-    height: 300px;
-    width: 500px;
-    width: 80.9%;
-    margin:0 9%;
+    width: 80%;
+    margin:0 10%;
 }
 .informacionProductoDetalles{
     margin-left:35pt;
     height: 200px;
 }
+
+/*Habilitar/Deshabilitar*/
+.botonCambiarEstado{
+    color: white;
+    font-weight: bold;
+    font-size: 14pt;
+    height: 27pt;
+    width:140px;
+}
+.botonHabilitar{
+    background-color: rgb(8, 151, 8);
+    border: 1px solid rgb(8, 151, 8);
+}
+.botonDeshabilitar{
+    background-color: rgb(199, 0, 96);
+    border: 1px solid rgb(199, 0, 96);
+}
+/*Crear Producto*/
+.botonCargarImagenProductoNuevo{
+    text-align: center;
+    margin-bottom: 10pt;
+}
+.botonCargar{
+    color:white;
+    font-weight: bold;
+    font-size: 14pt;
+    height: 25pt;
+    width: 75%;
+    background-color: #04AA6D;
+    border: 1px solid #04AA6D;
+}
+.botonCargar:hover{
+    background-color: #066643;
+    border: 1px solid #066643;
+    color:rgb(225, 225, 225);
+}
+#contenedorImgProducto{
+    margin:0 auto;
+    width: 400px;
+    background-color: #333;
+    margin-bottom: 5pt;
+}
+#imagenProducto{
+    width: 80%;
+    margin:0 10%;
+    margin-top: 4pt;
+}
+.contenedorDatosProducto,.contenedorDatosPedido{
+    overflow-y: auto;
+}
+.contenedorLabelsProducto,.contenedorInputsProducto,.contenedorLabelsPedido,.contenedorInputsPedido{
+    width:49%;
+    float:left;
+}
+.detallesProductoNuevo{
+    overflow-y: auto;
+}
+.modificarCantidadProducto{
+    width: 100%;
+    overflow-y: auto;
+}
+.anhadirProducto{
+    width: 44%;
+    float: right;
+    font-size: 14pt;
+    height: 20pt;
+    color: white;
+    background-color: #1da372;
+    font-weight: bold;
+    border:1px solid #1da372;
+    margin:0 3%;
+}
+.quitarProducto{
+    width: 44%;
+    float: left;
+    font-size: 14pt;
+    height: 20pt;
+    color: white;
+    background-color: rgb(211, 20, 20);
+    font-weight: bold;
+    border:1px solid rgb(211, 20, 20);
+    margin:0 3%;
+}
+.anhadirProducto:hover{
+    background-color: #147d57;
+    border:1px solid #147d57;
+}
+.quitarProducto:hover{
+    background-color: rgb(159, 18, 18);
+    border:1px solid rgb(159, 18, 18);
+}
+.noPuedoQuitar{
+    width: 44%;
+    float: left;
+    font-size: 14pt;
+    height: 20pt;
+    color: rgb(0, 0, 0);
+    background-color: rgb(128, 72, 72);
+    font-weight: bold;
+    border:1px solid rgb(128, 72, 72);
+    margin:0 3%;
+}
+
+/*Pedidos*/
+#contenedorPrincipalProductos{
+    float: left;
+    width: 62%;
+}
+#contenedorDatosClientePedido{
+    float:right;
+    width: 38%;
+    position: fixed;
+    right: 15pt;
+    border:1px solid black;
+    background-color: rgb(234, 234, 234);
+}
+.tamanhoProductoLista{
+    float:left;
+}
+.informacionProductoLista{
+    overflow-y: auto;
+    margin-bottom: 5pt;
+}
+.nombreProductoLista{
+    text-align: center;
+}
+.detallesProductoLista{
+    margin:0 5%;
+}
+.cantidadProductoPedido{
+    width:20% !important;
+    margin-left: 50pt;
+    text-align: center;
+}
+.totalPrecioProducto{
+    float:right;
+}
+#totalListaPedidos{
+    width: 40%;
+    float: right;
+    margin-top: 10pt;
+}
+.totalLabel{
+    font-weight: bold;
+}
+#productosDelPedidoNuevo{
+    overflow-y: auto;
+}
+
 
 
 body{
@@ -110,26 +256,20 @@ a:hover{
 th,td{
     padding:8pt;
 }
+#datosDetallesCliente{
+    margin:15pt;
+}
 #detallesCliente{
     border:1px solid black;
     margin-left:15pt;
     margin-top:15pt;
+    overflow-y: auto;
 }
 #contenedorTablaDirecciones{
-    margin:20pt;
-}
-#tablaDirecciones{
-    width: 80%;
-    float:left;
-}
-#botonTablaDirecciones{
     margin:15pt;
-    float:left;
 }
 #botonModificarCliente{
-    height: 30pt;
-    width:100pt;
-    margin:20pt;
+    margin:15pt;
 }
 #contenedorDatosCliente,#contenedorDireccionCliente{
     width:100%;
@@ -153,7 +293,7 @@ th,td{
 #contenedorPrincipal{
     min-height: 734px;
     margin: 0 15pt;
-
+    overflow-y: auto;
 }
 .contenedorBotonEnlace{
     left:15pt;
@@ -198,6 +338,10 @@ input[type="submit"]{
     color:white;
     font-weight: bold;
     margin:0 auto;
+}
+input[type="submit"]:hover{
+    background-color: rgb(77, 111, 173);
+    color:rgb(225, 225, 225);
 }
 select{
     width: 100%;

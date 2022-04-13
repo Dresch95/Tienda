@@ -14,41 +14,91 @@ Crear producto
             <img src="{{producto.imageURL}}" id="imagenProducto">
             {% else %}
             {% load static %}
-            <img src="{% static 'media/noimage.jpg' %}" id="imagenNuevoProducto">
+            <img src="{% static 'media/noimage.jpg' %}" id="imagenProducto">
             {% endif %}
         </div>
-        <div id="contenedorDatosProducto">
-            <div id="contenedorLabelsProducto">
+        <div class="botonCargarImagenProductoNuevo">
+            <button type="button" class="botonCargar" onclick="cargarImagen();">Cargar Imagen</button>
+        </div>
+        <div class="contenedorDatosProducto">
+            <div class="contenedorLabelsProducto">
                 <label>URL Imagen</label>
                 <br>
                 <label>Nombre</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Tamaño</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Peso(gr)</label><span class="campoRequerido"> *</span>
-                <br>
-                <label>Precio(€)</label><span class="campoRequerido"> *</span>
             </div>
-            <div id="contenedorInputsProducto">
+            <div class="contenedorInputsProducto">
                 <input type="text" pattern="[^'\x22]{10,480}"
                     placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen"
                     name="urlImagenProductoModificar" id="urlImagenProducto">
                 <br>
                 <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Tortilla" name="nombreProductoModificar"
-                    value="{{producto.name}}" required>
-                <br>
-                <select name="tiposTamanhoModificar" id="tiposTamanho" selected="{{producto.type}}" required>
-                    <option value="BG">Grande</option>
-                    <option value="AV">Mediana</option>
-                    <option value="SM">Pequeña</option>
-                </select>
-                <br>
-                <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificar"
-                    value="{{producto.weight}}" required>
-                <br>
-                <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificar"
-                    value="{{producto.price}}" required>
+                    value="{{producto.name}}" disabled>
                 <input type="hidden" name="productoID" value="{{producto.id}}">
+            </div>
+        </div>
+        <div class="detallesProductoNuevo">
+            <div class="contenedorDatosProducto">
+                <h3>Estándar</h3>
+                <div class="contenedorLabelsProducto">
+                    <label>Precio</label><span class="campoRequerido"> *</span>
+                    <br>
+                    <label>Peso</label>
+                </div>
+                <div class="contenedorInputsProducto">
+                    <input type="text" pattern="[^0$][0-9.]+" placeholder="10" name="precioProductoModificarEstandar" value="{{estandar.price}}" required>
+                    <br>
+                    {% if estandar.weight is Null%}
+                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarEstandar">
+                    {% else %}
+                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarEstandar" value="{{estandar.weight}}">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="contenedorDatosProducto">
+                <h3>Pequeño</h3>
+                <div class="contenedorLabelsProducto">
+                    <label>Precio</label>
+                    <br>
+                    <label>Peso</label>
+                </div>
+                <div class="contenedorInputsProducto">
+                    {% if pequenho.price != 0 %}
+                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificarPequenho" value="{{pequenho.price}}">
+                    <br>
+                    {% if pequenho.weight is Null%}
+                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarPequenho">
+                    {% else %}
+                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarPequenho" value="{{pequenho.weight}}">
+                    {% endif %}
+                    {% else %}
+                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificarPequenho">
+                    <br>
+                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarPequenho">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="contenedorDatosProducto">
+                <h3>Grande</h3>
+                <div class="contenedorLabelsProducto">
+                    <label>Precio</label>
+                    <br>
+                    <label>Peso</label>
+                </div>
+                <div class="contenedorInputsProducto">
+                    {% if grande.price != 0 %}
+                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificarGrande" value="{{grande.price}}">
+                    <br>
+                    {% if pequenho.weight is Null%}
+                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarGrande">
+                    {% else %}
+                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarrande" value="{{grande.weight}}">
+                    {% endif %}
+                    {% else %}
+                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="precioProductoModificarGrande">
+                    <br>
+                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarGrande">
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="centrarBoton">
@@ -56,4 +106,12 @@ Crear producto
         </div>
     </form>
 </div>
+<script>
+    function cargarImagen(){
+        var url=document.getElementById("urlImagenProducto").value;
+        if(url!=''){
+            document.getElementById("imagenProducto").setAttribute("src",url);
+        }
+    }
+</script>
 {% endblock %}
