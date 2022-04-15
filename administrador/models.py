@@ -54,14 +54,14 @@ class Orders(models.Model):
     delivery_date=models.DateTimeField()
     billing_address=models.ForeignKey(Address,blank=False,on_delete=models.RESTRICT, related_name='billing')
     shipping_address=models.ForeignKey(Address,blank=False,on_delete=models.RESTRICT,related_name='shipping')
-    unable=models.BooleanField(blank=False,default=False)
 
     def __str__(self) -> str:
         return super().__str__()
 
 class Order_Items(models.Model):
-    order=models.ForeignKey(Orders,blank=False,on_delete=models.RESTRICT)
+    order=models.ForeignKey(Orders,blank=False,on_delete=models.CASCADE)
     product=models.ForeignKey(Products_Details,blank=False,on_delete=models.RESTRICT)
+    price=models.FloatField(blank=False)
     quantity=models.IntegerField(blank=False)
 
     def __str__(self) -> str:

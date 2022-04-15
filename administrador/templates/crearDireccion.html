@@ -20,15 +20,15 @@ Crear Direccion
                 <label>Pais</label><span class="campoRequerido"> *</span>
             </div>
             <div id="contenedorInputsDireccion">
-                <input type="text" pattern="[a-zA-Z0-9ºª-.,]{1,290}" placeholder="Calle Inventada 123, Nº15"
+                <input type="text" pattern="[\p{Letter}0-9\s.,ºª-]{1,290}" placeholder="Calle Inventada 123, Nº15"
                     name="calleDireccionNueva" required>
                 <br>
-                <input type="text" pattern="[a-ZA-Z,.]{1,100}" placeholder="Madrid" name="ciudadDireccionNueva"
+                <input type="text" pattern="[\p{Letter}\s.,-]{1,100}" placeholder="Madrid" name="ciudadDireccionNueva"
                     required>
                 <br>
                 <input type="text" pattern="[0-9]{0,29}" placeholder="12345" name="codigoDireccionNueva">
                 <br>
-                <input type="text" pattern="[a-ZA-Z,.]{1,150}" placeholder="España" name="paisDireccionNueva" required>
+                <input type="text" pattern="[\p{Letter}\s.,-]{1,150}" placeholder="España" name="paisDireccionNueva" required>
             </div>
         </div>
         <input type="hidden" value="{{idCliente}}" name="cliente">

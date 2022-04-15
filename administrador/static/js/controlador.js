@@ -41,7 +41,48 @@ function anhadirProducto(event) {
         contenedor.appendChild(cantidad);
     }
 }
+function modificarEstadoDelCliente(event) {
+    var boton = event.target;
+    var id = boton.value;
+    $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' } });
+    $.ajax({
+        url: "{% url 'cambiarEstadoCliente' %}",
+        type: 'POST',
+        data: { 'idCliente': id },
+        dataType: 'json'
+    }).done(function (response) {
+        if (response['estado_cambiado']) {
+            boton.textContent = "Habilitar";
+            boton.setAttribute("class", "botonCambiarEstado botonHabilitar");
+        } else {
+            boton.textContent = "Deshabilitar";
+            boton.setAttribute("class", "botonCambiarEstado botonDeshabilitar");
+        }
+    }).fail(function () {
+        console.log("failed");
+    })
+}
+function comprobarCliente(e) {
+    $.ajax({
+        url: "{% url 'comprobarCliente' %}",
+        type: 'POST',
+        headers:{'X-CSRFToken':'{{ csrf_token }}'},
+        data: { 'idCliente': e.target.name },
+        dataType: 'json',
+        success: function (data) {
 
+        }
+    }).done(function (response) {
+        if (response['tiene_pedido']) {
+            alert("Cliente tiene pedidos");
+        }else{
+            document.getElementById(e.target.name).remove();
+        }
+    })
+        .fail(function () {
+            console.log("failed");
+        })
+}
 /*
 {% if pr.size == 'BG' %}
 Grande

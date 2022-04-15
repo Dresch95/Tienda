@@ -49,6 +49,7 @@ Crear pedido
                 </div>
                 <div class="contenedorInputsPedido">
                     <select name="selectClientes" id="selectClientes" onchange="cargarDirecciones(event);" required>
+                        <option value="-1">Seleccione</option>
                         {% for c in clientes %}
                         <option value="{{c.id}}">{{c.name}}</option>
                         {% endfor %}
@@ -80,6 +81,7 @@ Crear pedido
     function cargarDirecciones(e){
         $("#selectEnvio").empty();
         $("#selectFacturacion").empty();
+        $("#selectClientes option[value='-1']").remove();
         var select1=document.getElementById("selectEnvio");
         var select2=document.getElementById("selectFacturacion");
         $.ajax({
@@ -113,8 +115,8 @@ Crear pedido
         for (var i = 0; i < contenedor.children.length; i++) {
             if (contenedor.children[i].children[0].children[0].value == event.target.value) {
                 contenedor.children[i].children[1].children[0].value++;
-                contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)+parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
-                total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)+parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
+                total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
                 yaExiste=true;
             }
         }
@@ -124,10 +126,10 @@ Crear pedido
             var contenedorCantidadProducto=document.createElement("div");
             var producto = document.createElement("input");
             var cantidad = document.createElement("input");
+            var precioProducto = document.createElement("input");
             var totalProducto = document.createElement("label");
             var nombreProducto = document.createElement("label");
             var tamanhoProducto = document.createElement("label");
-            var precioProducto = document.createElement("label");
             var moneda = document.createElement("label");
             var moneda2 = document.createElement("label");
 
@@ -141,7 +143,6 @@ Crear pedido
 
             nombreProducto.textContent=event.target.parentElement.parentElement.children[1].children[0].children[0].textContent;
             tamanhoProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[0].textContent;
-            precioProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[2].textContent;
             moneda.textContent="€";
             moneda2.textContent="€";
             totalProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[2].textContent;
@@ -150,8 +151,14 @@ Crear pedido
             moneda.setAttribute("class","totalPrecioProducto");
             precioProducto.setAttribute("class","totalPrecioProducto");
 
+            precioProducto.setAttribute("type", "text");
+            precioProducto.setAttribute("readonly","readonly");
+            precioProducto.setAttribute("value", event.target.parentElement.parentElement.children[1].children[1].children[2].textContent);
+            precioProducto.setAttribute("name","precio");
+            precioProducto.setAttribute("class","precioProductoPedido");
+
             cantidad.setAttribute("type", "text");
-            cantidad.setAttribute("disabled", true);
+            cantidad.setAttribute("readonly","readonly");
             cantidad.setAttribute("value", 1);
             cantidad.setAttribute("name","cantidad");
             cantidad.setAttribute("class","cantidadProductoPedido");
@@ -169,7 +176,7 @@ Crear pedido
             contenedorInfoProducto.appendChild(moneda);
             contenedorInfoProducto.appendChild(precioProducto);
             event.target.parentElement.children[0].setAttribute("class","quitarProducto");
-            total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+            total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
         }
     }
     function quitarProducto(event){
@@ -178,13 +185,13 @@ Crear pedido
         for (var i = 0; i < contenedor.children.length; i++) {
             if (contenedor.children[i].children[0].children[0].value == event.target.value) {
                 if(contenedor.children[i].children[1].children[0].value==1){
-                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
                     contenedor.removeChild(contenedor.children[i]);
                     event.target.setAttribute("class","noPuedoQuitar");
                 }else{
                     contenedor.children[i].children[1].children[0].value--;
-                    contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)-parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
-                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].textContent)).toFixed(2);
+                    contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)-parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
+                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
                 }
             }
         }

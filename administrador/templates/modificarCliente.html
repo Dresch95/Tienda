@@ -18,9 +18,9 @@ Modificar cliente
                 <label>Telefono</label>
             </div>
             <div id="contenedorInputsCliente">
-                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Pepe" name="nombreClienteModificar" value="{{cliente.name}}" required>
+                <input type="text" pattern="[\p{Letter}\s,-]{1,99}" placeholder="Pepe" name="nombreClienteModificar" value="{{cliente.name}}" required>
                 <br>
-                <input type="text" pattern="[a-zA-Z0-9._]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}" placeholder="ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" required>
+                <input type="text" pattern="[\p{Letter}0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2, placeholder="ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" required>
                 <br>
                 <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteModificar" value="{{cliente.tel}}">
                 <input type="hidden" name="clienteID" value="{{cliente.id}}">

@@ -180,6 +180,20 @@ footer p{
     margin:0 3%;
 }
 
+/*ListaProductos*/
+.contenedorBotonesProductoLista{
+    margin-top: 2pt;
+}
+.botonProductoLista{
+    color:white;
+    padding:1pt 16.5pt;
+}
+#contenedorPrincipalProductosLista{
+    float: left;
+    width: 90%;
+}
+
+
 /*Pedidos*/
 #contenedorPrincipalProductos{
     float: left;
@@ -211,8 +225,16 @@ footer p{
     margin-left: 50pt;
     text-align: center;
 }
+.precioProductoPedido{
+    text-align: right;
+    float: right;
+    width: 50pt !important;
+}
 .totalPrecioProducto{
     float:right;
+}
+td.cifras{
+    text-align: right;
 }
 #totalListaPedidos{
     width: 40%;
@@ -227,6 +249,31 @@ footer p{
 }
 
 
+
+#listaPedidos{
+    overflow-y: hidden;
+}
+.direccionDetallesPedido{
+    margin-left: 15pt;
+    margin-bottom: 15pt;
+}
+.contenedorDirecciones{
+    width:48%;
+    float: right;
+}
+.detallesDelPedido{
+    width:48%;
+    float: left;
+}
+.contenedorDetallesPedido{
+    width: 100%;
+}
+.productosDetallesPedido{
+    margin:10pt;
+}
+.detallesClientePedido{
+    margin:15pt;
+}
 
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -293,15 +340,22 @@ th,td{
 #contenedorPrincipal{
     min-height: 734px;
     margin: 0 15pt;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 .contenedorBotonEnlace{
-    left:15pt;
-    bottom:150px;
+    position: fixed;
+    right:25pt;
+    top:66pt;
 }
 .botonEnlace{
     padding: 5pt;
     color:white;
+}
+.botonEnlace:hover{
+    cursor:pointer;
+}
+button:hover{
+    cursor:pointer;
 }
 .Azul{
     background-color: cornflowerblue;

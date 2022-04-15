@@ -5,10 +5,10 @@ Listado de Productos
 {% endblock %}
 
 {% block 'contenido' %}
-<div id="contenedorPrincipalProductos">
+<div id="contenedorPrincipalProductosLista">
     {% for p in productos %}
     <a href="{% url 'detallesProducto' p.id %}">
-        <div class="productoLista">
+        <div class="productoLista" id="{{p.id}}">
             <div class="imagenProductoLista">
                 {% if p.imageURL != '' %}
                 <img src="{{p.imageURL}}" class="imagenProducto">
@@ -23,6 +23,10 @@ Listado de Productos
                         <label class="nombreProductoLista">{{p.name}}</label>
                     </div>
                 </a>
+                <div class="contenedorBotonesProductoLista">
+                    <a href="{% url 'modificarProductoVista' p.id %}" class="botonProductoLista Azul">Modificar</a>
+                    <a name="{{p.id}}" class="botonProductoLista Rojo" onclick="comprobarProducto(event);">Eliminar</a>
+                </div>
             </div>
         </div>
     </a>
@@ -32,4 +36,29 @@ Listado de Productos
 <div class="contenedorBotonEnlace">
     <a href="{% url 'crearProductoVista' %}" class="botonEnlace Azul">Crear Producto</a>
 </div>
+<script>
+    function comprobarProducto(e) {
+        if(confirm("Quieres eliminar el producto?")){
+        $.ajax({
+            url: "{% url 'borrarProducto' %}",
+            type: 'POST',
+            headers:{'X-CSRFToken':'{{ csrf_token }}'},
+            data: { 'idProducto': e.target.name },
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        }).done(function (response) {
+            if (response['tiene_pedido']) {
+                alert("Producto esta en pedidos");
+            }else{
+                document.getElementById(e.target.name).remove();
+            }
+        })
+            .fail(function () {
+                console.log("failed");
+            })
+        }
+    }
+</script>
 {% endblock %}

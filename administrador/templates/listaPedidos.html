@@ -5,22 +5,57 @@ Listado de Pedidos
 {% endblock %}
 
 {% block 'contenido' %}
-{% for p in pedidos %}
-<div class="detallesPedido">
-    <p>{{p.client.name}}</p>
-    <p>{{p.order_date}}</p>
-    <a href="{% url 'modificarPedidoVista' p.id %}">Modificar</a>
-    <a href="{% url 'eliminarPedido' p.id %}">Eliminar</a>
-    {% if p.unable %}
-    <td><button value="{{p.id}}" id="modificarEstadoPedido" onclick="modificarEstadoDelPedido(event);"
-            class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
-    {% else %}
-    <td><button value="{{p.id}}" id="modificarEstadoPedido" onclick="modificarEstadoDelPedido(event);"
-            class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
-    {% endif %}
+<div id="listaPedidos">
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha del Pedido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in pedidos %}
+            <tr id="{{p.id}}">
+                <td><a href="{% url 'detallesPedido' p.id %}">{{p.client.name}}</a></td>
+                <td>{{p.order_date}}</td>
+                <td><a href="{% url 'detallesPedido' p.id %}" class="botonEnlace Azul">Modificar</a></td>
+                <td><a name="{{p.id}}" class="botonEnlace Rojo" onclick="eliminarPedido(event);">Eliminar</a></td>
+                {% if c.unable %}
+                <td><button value="{{c.id}}" id="modificarEstadoCliente"
+                        class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
+                {% else %}
+                <td><button value="{{c.id}}" id="modificarEstadoCliente"
+                        class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="contenedorBotonEnlace">
+        <a href="{% url 'crearPedidoVista' %}" class="botonEnlace Azul">Crear Pedido</a>
+    </div>
 </div>
-{% endfor %}
-<div class="contenedorBotonEnlace">
-    <a href="{% url 'crearPedidoVista' %}" class="botonEnlace Azul">Crear Pedido</a>
-</div>
+<script>
+    function eliminarPedido(e) {
+        if(confirm("Seguro que quieres eliminar el pedido?")){
+        $.ajax({
+            url: "{% url 'eliminarPedido' %}",
+            type: 'POST',
+            headers:{'X-CSRFToken':'{{ csrf_token }}'},
+            data: { 'idPedido': e.target.name },
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        }).done(function (response) {
+            if(response['pedido_eliminado']){
+                document.getElementById(e.target.name).remove();
+            }
+        })
+            .fail(function () {
+                console.log("failed");
+            })
+        }
+    }
+</script>
 {% endblock %}

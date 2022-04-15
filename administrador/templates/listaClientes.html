@@ -14,46 +14,69 @@ Listado de Clientes
     </thead>
     <tbody>
         {% for c in clientes %}
-        <tr>
+        <tr id="{{c.id}}">
             <td><a href="{% url 'detallesCliente' c.id %}">{{c.name}}</a></td>
             <td>{{c.email}}</td>
             <td><a href="{% url 'modificarClienteVista' c.id %}" class="botonEnlace Azul">Modificar</a></td>
-            <td><a href="{% url 'borrarCliente' c.id %}" class="botonEnlace Rojo">Eliminar</a></td>
+            <td><a class="botonEnlace Rojo" name="{{c.id}}" onclick="comprobarCliente(event);">Eliminar</a></td>
             {% if c.unable %}
-            <td><button value="{{c.id}}" id="modificarEstadoCliente"
-                    onclick="modificarEstadoDelCliente(event);" class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
+            <td><button value="{{c.id}}" id="modificarEstadoCliente" onclick="modificarEstadoDelCliente(event);"
+                    class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
             {% else %}
-            <td><button value="{{c.id}}" id="modificarEstadoCliente"
-                    onclick="modificarEstadoDelCliente(event);"  class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
+            <td><button value="{{c.id}}" id="modificarEstadoCliente" onclick="modificarEstadoDelCliente(event);"
+                    class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
             {% endif %}
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<div class="crearBoton">
+<div class="contenedorBotonEnlace">
     <a href="{% url 'crearClienteVista' %}" class="botonEnlace Azul">Crear Cliente</a>
 </div>
 <script>
     function modificarEstadoDelCliente(event) {
         var boton = event.target;
         var id = boton.value;
-        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}' } });
+        $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' } });
         $.ajax({
             url: "{% url 'cambiarEstadoCliente' %}",
             type: 'POST',
-            data: {'idCliente':id},
+            data: { 'idCliente': id },
             dataType: 'json'
         }).done(function (response) {
             if (response['estado_cambiado']) {
                 boton.textContent = "Habilitar";
-                boton.setAttribute("class","botonCambiarEstadoCliente botonHabilitar");
+                boton.setAttribute("class", "botonCambiarEstado botonHabilitar");
             } else {
                 boton.textContent = "Deshabilitar";
-                boton.setAttribute("class","botonCambiarEstadoCliente botonDeshabilitar");
+                boton.setAttribute("class", "botonCambiarEstado botonDeshabilitar");
             }
         }).fail(function () {
+            console.log("failed");
+        })
+    }
+    function comprobarCliente(e) {
+        if(confirm("Quieres eliminar el cliente?")){
+        $.ajax({
+            url: "{% url 'comprobarCliente' %}",
+            type: 'POST',
+            headers:{'X-CSRFToken':'{{ csrf_token }}'},
+            data: { 'idCliente': e.target.name },
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        }).done(function (response) {
+            if (response['tiene_pedido']) {
+                alert("Cliente tiene pedidos");
+            }else{
+                document.getElementById(e.target.name).remove();
+            }
+        })
+            .fail(function () {
                 console.log("failed");
             })
+        }
     }
 </script>
 {% endblock %}

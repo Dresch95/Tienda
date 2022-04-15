@@ -5,16 +5,68 @@ Detalles de Pedido
 {% endblock %}
 
 {% block 'contenido' %}
-<p>Nombre: {{cliente.name}}</p>
-<p>Fecha: {{pedido.order_date}}</p>
-{% if pedido.delivery_date != '' %}
-<p>Fecha entrega: {{pedido.delivery_date}}</p>
-{% endif %}
-{% for p in productos_del_pedido %}
-    <div class="contenedorProductoPedido">
-        <p>{{p.name}}</p>
-        <p>{{p.price}}</p>
+<div class="contenedorDetallesPedido">
+    <div class="detallesDelPedido">
+        <div class="detallesClientePedido">
+            <p>Nombre: {{pedido.client.name}}</p>
+            <p>Fecha: {{pedido.order_date}}</p>
+            {% if pedido.delivery_date != '' %}
+            <p>Fecha entrega: {{pedido.delivery_date}}</p>
+            {% endif %}
+        </div>
+        <div class="productosDetallesPedido">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Tamaño</th>
+                        <th>Cantidad</th>
+                        <th>Precio(€)</th>
+                        <th>Precio Conjunto(€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos_del_pedido %}
+                        <tr>
+                            <td>{{p.product.product.name}}</td>
+                            <td>{% if p.product.size == 'BG' %}
+                                Grande
+                            {% elif p.product.size == 'AV' %}
+                                Estandar
+                            {% elif p.product.size == 'SM' %}
+                                Pequeño
+                            {% endif %}</td>
+                            <td class="cifras">{{p.quantity}}</td>
+                            <td class="cifras">{{p.price}}</td>
+                            {% load formatoDecimal %}
+                            <td class="cifras">{{ p.price|product:p.quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td style="font-weight: bold;">TOTAL</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="font-weight: bold;" class="cifras">{{total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-{% endfor %}
-<a href="{% url 'modificarPedidoVista' pedido.id %}" class="botonEnlace">Modificar Pedido</a>
+    <div class="contenedorDirecciones">
+        <h3>Direccion Facturacion: </h3>
+        <div class="direccionDetallesPedido">
+            <p>Calle: {{pedido.billing_address.street}}</p>
+            <p>Ciudad: {{pedido.billing_address.city}}</p>
+            <p>Pais: {{pedido.billing_address.country}}</p>
+        </div>
+        <h3>Direccion Entrega: </h3>
+        <div class="direccionDetallesPedido">
+            <p>Calle: {{pedido.shipping_address.street}}</p>
+            <p>Ciudad: {{pedido.shipping_address.city}}</p>
+            <p>Pais: {{pedido.shipping_address.country}}</p>
+        </div>
+    </div>
+    <a href="{% url 'modificarPedidoVista' pedido.id %}" class="botonEnlace Azul">Modificar Pedido</a>
+</div>
 {% endblock %}

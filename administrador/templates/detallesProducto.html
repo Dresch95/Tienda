@@ -37,11 +37,18 @@ Detalles de Producto
                             <td>Pequeño</td>
                             {% endif %}
                             {% if d.weight is not Null %}
-                            <td>{{d.weight}}</td>
+                            <td class="cifras">{{d.weight}}</td>
                             {% else %}
                             <td></td>
                             {% endif %}
-                            <td>{{d.price}}</td>
+                            <td class="cifras">{{d.price}}</td>
+                            {% if d.unable %}
+                            <td><button value="{{d.id}}" id="modificarEstadoProducto" onclick="modificarEstadoDelProducto(event);"
+                                    class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
+                            {% else %}
+                            <td><button value="{{d.id}}" id="modificarEstadoProducto" onclick="modificarEstadoDelProducto(event);"
+                                    class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
+                            {% endif %}
                         </tr>
                     {% endif %}
                     {% endfor %}
@@ -51,4 +58,27 @@ Detalles de Producto
         <a href="{% url 'modificarProductoVista' producto.id %}" class="botonEnlace Azul">Modificar Producto</a>
     </div>
 </div>
+<script>
+        function modificarEstadoDelProducto(event) {
+        var boton = event.target;
+        var id = boton.value;
+        $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' } });
+        $.ajax({
+            url: "{% url 'cambiarEstadoProducto' %}",
+            type: 'POST',
+            data: { 'idProducto': id },
+            dataType: 'json'
+        }).done(function (response) {
+            if (response['estado_cambiado']) {
+                boton.textContent = "Habilitar";
+                boton.setAttribute("class", "botonCambiarEstado botonHabilitar");
+            } else {
+                boton.textContent = "Deshabilitar";
+                boton.setAttribute("class", "botonCambiarEstado botonDeshabilitar");
+            }
+        }).fail(function () {
+            console.log("failed");
+        })
+    }
+</script>
 {% endblock %}

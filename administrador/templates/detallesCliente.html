@@ -26,14 +26,15 @@ Detalles de Cliente
                 </thead>
                 <tbody>
                     {% for d in direcciones %}
-                        <tr>
-                            <td>{{d.street}}</td>
-                            <td>{{d.city}}</td>
-                            <td>{{d.country}}</td>
-                            <td>{{d.code}}</td>
-                            <td><a href="{% url 'modificarDireccionVista' d.id %}" class="botonEnlace Azul">Modificar</a></td>
-                            <td><a href="{% url 'borrarDireccion' d.id %}" class="botonEnlace Rojo">Eliminar</a></td>
-                        </tr>
+                    <tr id="{{d.id}}">
+                        <td>{{d.street}}</td>
+                        <td>{{d.city}}</td>
+                        <td>{{d.country}}</td>
+                        <td>{{d.code}}</td>
+                        <td><a href="{% url 'modificarDireccionVista' d.id %}" class="botonEnlace Azul">Modificar</a>
+                        </td>
+                        <td><a name="{{d.id}}" class="botonEnlace Rojo" onclick="comprobarDireccion(event);">Eliminar</a></td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -46,4 +47,27 @@ Detalles de Cliente
 <div id="botonModificarCliente">
     <a href="{% url 'modificarClienteVista' cliente.id %}" class="botonEnlace Azul">Modificar Cliente</a>
 </div>
+<script>
+    function comprobarDireccion(e) {
+        $.ajax({
+            url: "{% url 'comprobarDireccion' %}",
+            type: 'POST',
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+            data: { 'idDireccion': e.target.name },
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        }).done(function (response) {
+            if (response['tiene_pedido']) {
+                alert("Direccion usada en pedido");
+            } else {
+                document.getElementById(e.target.name).remove();
+            }
+        })
+            .fail(function () {
+                console.log("failed");
+            })
+    }
+</script>
 {% endblock %}
