@@ -6,7 +6,8 @@ Detalles de Producto
 
 {% block 'contenido' %}
 <div class="productoDetalles">
-    <div class="imagenProductoDetalles">
+    <h2>Detalles de {{producto.name}}</h2>
+    <div class="contenedorImagenProductoDetalles">
         {% if producto.imageURL != '' %}
         <img src="{{producto.imageURL}}" class="imagenProductoDetalles">
         {% else %}
@@ -16,7 +17,7 @@ Detalles de Producto
     </div>
     <div class="informacionProductoDetalles">
         <p>Nombre: {{producto.name}}</p>
-        <div id="tablaDirecciones">
+        <div id="tablaTamanhos">
             <table>
                 <thead>
                     <tr>

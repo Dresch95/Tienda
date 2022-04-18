@@ -5,6 +5,7 @@ Listado de Productos
 {% endblock %}
 
 {% block 'contenido' %}
+<h2>Listado de Productos</h2>
 <div id="contenedorPrincipalProductosLista">
     {% for p in productos %}
     <a href="{% url 'detallesProducto' p.id %}">
@@ -28,6 +29,17 @@ Listado de Productos
                     <a name="{{p.id}}" class="botonProductoLista Rojo" onclick="comprobarProducto(event);">Eliminar</a>
                 </div>
             </div>
+            <div class="contenedorEstadoProducto">
+                {% if p.unable %}
+                <button value="{{p.id}}" id="modificarEstadoProducto"
+                        onclick="modificarEstadoDelProducto(event);"
+                        class="botonCambiarEstadoProducto botonHabilitar">Habilitar</button>
+                {% else %}
+                <button value="{{p.id}}" id="modificarEstadoProducto"
+                        onclick="modificarEstadoDelProducto(event);"
+                        class="botonCambiarEstadoProducto botonDeshabilitar">Deshabilitar</button>
+                {% endif %}
+            </div>
         </div>
     </a>
     {% endfor %}
@@ -38,27 +50,48 @@ Listado de Productos
 </div>
 <script>
     function comprobarProducto(e) {
-        if(confirm("Quieres eliminar el producto?")){
-        $.ajax({
-            url: "{% url 'borrarProducto' %}",
-            type: 'POST',
-            headers:{'X-CSRFToken':'{{ csrf_token }}'},
-            data: { 'idProducto': e.target.name },
-            dataType: 'json',
-            success: function (data) {
+        if (confirm("Quieres eliminar el producto?")) {
+            $.ajax({
+                url: "{% url 'borrarProducto' %}",
+                type: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                data: { 'idProducto': e.target.name },
+                dataType: 'json',
+                success: function (data) {
 
-            }
-        }).done(function (response) {
-            if (response['tiene_pedido']) {
-                alert("Producto esta en pedidos");
-            }else{
-                document.getElementById(e.target.name).remove();
-            }
-        })
-            .fail(function () {
-                console.log("failed");
+                }
+            }).done(function (response) {
+                if (response['tiene_pedido']) {
+                    alert("Producto esta en pedidos");
+                } else {
+                    document.getElementById(e.target.name).remove();
+                }
             })
+                .fail(function () {
+                    console.log("failed");
+                })
         }
+    }
+    function modificarEstadoDelProducto(event) {
+        var boton = event.target;
+        var id = boton.value;
+        $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' } });
+        $.ajax({
+            url: "{% url 'cambiarEstadoDelProducto' %}",
+            type: 'POST',
+            data: { 'idProducto': id },
+            dataType: 'json'
+        }).done(function (response) {
+            if (response['estado_cambiado']) {
+                boton.textContent = "Habilitar";
+                boton.setAttribute("class", "botonCambiarEstadoProducto botonHabilitar");
+            } else {
+                boton.textContent = "Deshabilitar";
+                boton.setAttribute("class", "botonCambiarEstadoProducto botonDeshabilitar");
+            }
+        }).fail(function () {
+            console.log("failed");
+        })
     }
 </script>
 {% endblock %}

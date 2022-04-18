@@ -6,6 +6,7 @@ Detalles de Cliente
 
 {% block 'contenido' %}
 <div id="detallesCliente">
+    <h2>Detalles de {{cliente.name}}</h2>
     <div id="datosDetallesCliente">
         <p>Nombre: {{cliente.name}}</p>
         <p>Email: {{cliente.email}}</p>
@@ -14,6 +15,8 @@ Detalles de Cliente
         {% endif %}
     </div>
     <div id="contenedorTablaDirecciones">
+        {% if direcciones %}
+        <h3>Direcciones</h3>
         <div id="tablaDirecciones">
             <table>
                 <thead>
@@ -34,11 +37,19 @@ Detalles de Cliente
                         <td><a href="{% url 'modificarDireccionVista' d.id %}" class="botonEnlace Azul">Modificar</a>
                         </td>
                         <td><a name="{{d.id}}" class="botonEnlace Rojo" onclick="comprobarDireccion(event);">Eliminar</a></td>
+                        {% if d.unable %}
+                        <td><button value="{{d.id}}" id="modificarEstadoDireccion" onclick="modificarEstadoDeLaDireccion(event);"
+                                class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
+                        {% else %}
+                        <td><button value="{{d.id}}" id="modificarEstadoDireccion" onclick="modificarEstadoDeLaDireccion(event);"
+                                class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+        {% endif %}
         <div id="botonTablaDirecciones">
             <a href="{% url 'crearDireccionVista' cliente.id %}" class="botonEnlace Azul">Añadir Direccion</a>
         </div>
@@ -68,6 +79,27 @@ Detalles de Cliente
             .fail(function () {
                 console.log("failed");
             })
+    }
+    function modificarEstadoDeLaDireccion(event) {
+        var boton = event.target;
+        var id = boton.value;
+        $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' } });
+        $.ajax({
+            url: "{% url 'cambiarEstadoDeLaDireccion' %}",
+            type: 'POST',
+            data: { 'idDireccion': id },
+            dataType: 'json'
+        }).done(function (response) {
+            if (response['estado_cambiado']) {
+                boton.textContent = "Habilitar";
+                boton.setAttribute("class", "botonCambiarEstado botonHabilitar");
+            } else {
+                boton.textContent = "Deshabilitar";
+                boton.setAttribute("class", "botonCambiarEstado botonDeshabilitar");
+            }
+        }).fail(function () {
+            console.log("failed");
+        })
     }
 </script>
 {% endblock %}

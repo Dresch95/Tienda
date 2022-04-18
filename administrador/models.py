@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Clients(models.Model):
     name=models.CharField(max_length=100,blank=False)
-    email=models.EmailField(max_length=150,blank=False)
+    email=models.EmailField(max_length=150,blank=False,unique=True)
     tel=models.CharField(max_length=20)
     unable=models.BooleanField(blank=False,default=False)
 
@@ -16,6 +16,7 @@ class Address(models.Model):
     city=models.CharField(max_length=100,blank=False)
     code=models.CharField(max_length=30)
     country=models.CharField(max_length=150,blank=False)
+    unable=models.BooleanField(blank=False,default=False)
 
     def __str__(self) -> str:
         return super().__str__()
@@ -23,7 +24,8 @@ class Address(models.Model):
 class Products(models.Model):
     name=models.CharField(max_length=200,blank=False, unique=True)
     imageURL=models.URLField(max_length=500)
-
+    unable=models.BooleanField(blank=False,default=False)
+    
     def __str__(self) -> str:
         return super().__str__()
 

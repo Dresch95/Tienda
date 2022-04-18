@@ -63,19 +63,15 @@ footer p{
     float:right;
 }
 /*productoDetalles*/
-.productoDetalles{
-    height: 500px;
-    width: 500px;
+.contenedorImagenProductoDetalles{
+    background-color: rgb(30, 30, 30);
+    max-height: 350px;
+    width:300px;
+    padding:0 2%;
 }
 .imagenProductoDetalles{
-    background-color: rgb(30, 30, 30);
-    float:left;
-    width: 80%;
-    margin:0 10%;
-}
-.informacionProductoDetalles{
-    margin-left:35pt;
-    height: 200px;
+    width: 300px;
+    max-height: 350px;
 }
 
 /*Habilitar/Deshabilitar*/
@@ -86,13 +82,28 @@ footer p{
     height: 27pt;
     width:140px;
 }
+.botonCambiarEstadoProducto{
+    color: white;
+    font-weight: bold;
+    font-size: 14pt;
+    height: 27pt;
+    width:100%;
+}
 .botonHabilitar{
     background-color: rgb(8, 151, 8);
     border: 1px solid rgb(8, 151, 8);
 }
 .botonDeshabilitar{
-    background-color: rgb(199, 0, 96);
-    border: 1px solid rgb(199, 0, 96);
+    background-color: rgb(217, 31, 121);
+    border: 1px solid rgb(217, 31, 121);
+}
+.botonHabilitar:hover{
+    background-color: rgb(26, 120, 26);
+    border: 1px solid rgb(26, 120, 26);
+}
+.botonDeshabilitar:hover{
+    background-color: rgb(170, 34, 99);
+    border: 1px solid rgb(170, 34, 99);
 }
 /*Crear Producto*/
 .botonCargarImagenProductoNuevo{
@@ -186,6 +197,7 @@ footer p{
 }
 .botonProductoLista{
     color:white;
+    cursor: pointer;
     padding:1pt 16.5pt;
 }
 #contenedorPrincipalProductosLista{
@@ -195,6 +207,9 @@ footer p{
 
 
 /*Pedidos*/
+.detallesPedido{
+    overflow-y: auto;
+}
 #contenedorPrincipalProductos{
     float: left;
     width: 62%;
@@ -345,7 +360,7 @@ th,td{
 .contenedorBotonEnlace{
     position: fixed;
     right:25pt;
-    top:66pt;
+    top:115pt;
 }
 .botonEnlace{
     padding: 5pt;

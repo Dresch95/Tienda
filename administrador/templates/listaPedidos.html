@@ -6,6 +6,8 @@ Listado de Pedidos
 
 {% block 'contenido' %}
 <div id="listaPedidos">
+    <h2>Listado de Pedidos</h2>
+    {% if pedidos %}
     <table>
         <thead>
             <tr>
@@ -18,19 +20,12 @@ Listado de Pedidos
             <tr id="{{p.id}}">
                 <td><a href="{% url 'detallesPedido' p.id %}">{{p.client.name}}</a></td>
                 <td>{{p.order_date}}</td>
-                <td><a href="{% url 'detallesPedido' p.id %}" class="botonEnlace Azul">Modificar</a></td>
                 <td><a name="{{p.id}}" class="botonEnlace Rojo" onclick="eliminarPedido(event);">Eliminar</a></td>
-                {% if c.unable %}
-                <td><button value="{{c.id}}" id="modificarEstadoCliente"
-                        class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
-                {% else %}
-                <td><button value="{{c.id}}" id="modificarEstadoCliente"
-                        class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
-                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
     <div class="contenedorBotonEnlace">
         <a href="{% url 'crearPedidoVista' %}" class="botonEnlace Azul">Crear Pedido</a>
     </div>

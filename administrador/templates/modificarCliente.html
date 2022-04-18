@@ -6,9 +6,9 @@ Modificar cliente
 
 {% block 'contenido' %}
 <div id="contenedorFormularioModificar">
-    <form action="{% url 'modificarCliente' %}" method="post">
+    <form action="{% url 'modificarCliente' %}" method="post" id="formularioModificarCliente">
         {% csrf_token %}
-        <h2>Datos Cliente</h2>
+        <h2>Modificar Cliente</h2>
         <div id="contenedorDatosCliente">
             <div id="contenedorLabelsCliente">
                 <label>Nombre</label><span class="campoRequerido"> *</span>
@@ -18,18 +18,54 @@ Modificar cliente
                 <label>Telefono</label>
             </div>
             <div id="contenedorInputsCliente">
-                <input type="text" pattern="[\p{Letter}\s,-]{1,99}" placeholder="Pepe" name="nombreClienteModificar" value="{{cliente.name}}" required>
+                <input type="text" pattern="[\p{Letter}\s,-]{1,99}" placeholder="Pepe" name="nombreClienteModificar"
+                    value="{{cliente.name}}" required>
                 <br>
-                <input type="text" pattern="[\p{Letter}0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2, placeholder="ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" required>
+                <input type="text" pattern="[\p{Letter}0-9._-]+@[\p{Letter}0-9._-]+\.[\p{Letter}]{2,}" placeholder="
+                    ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" id="emailClienteModificar" required>
                 <br>
-                <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteModificar" value="{{cliente.tel}}">
-                <input type="hidden" name="clienteID" value="{{cliente.id}}">
+                <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteModificar"
+                    value="{{cliente.tel}}">
+                <input type="hidden" name="clienteID" id="clienteID" value="{{cliente.id}}">
             </div>
         </div>
         <div class="centrarBoton">
             <a href="{% url 'detallesCliente' cliente.id %}" class="botonEnlace Rojo">Cancelar</a>
-            <input type="submit" value="Modificar">
+            <input type="submit" value="Modificar" onclick="quitarAdvertencia();">
         </div>
     </form>
 </div>
+<script>
+    $("#formularioModificarCliente").submit(function (e) {
+        e.preventDefault();
+        var email = document.getElementById('emailClienteModificar');
+        var idCliente = document.getElementById('clienteID');
+        if (email.value != "") {
+            $.ajax({
+                url: "{% url 'comprobarEmailModificar' %}",
+                type: 'GET',
+                data: { 'idCliente':idCliente.value,'email': email.value },
+                dataType: 'json',
+                success: function (data) {
+
+                }
+            }).done(function (response) {
+                if (!response['email_existe']) {
+                    document.getElementById("formularioModificarCliente").submit();
+                } else {
+                    email.setCustomValidity("Ese email ya existe");
+                    email.reportValidity();
+                }
+            })
+                .fail(function () {
+                    console.log("failed");
+                })
+        }
+    });
+    function quitarAdvertencia() {
+        var email = document.getElementById('emailClienteModificar');
+        email.setCustomValidity("");
+        email.reportValidity();
+    }
+</script>
 {% endblock %}

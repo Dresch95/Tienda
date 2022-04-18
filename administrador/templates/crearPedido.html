@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block 'titulo' %}
-Crear pedido
+Crear Pedido
 {% endblock %}
 
 {% block 'contenido' %}
 <div class="contenedorPedido">
+    <h2>Crear Pedido</h2>
     <div id="contenedorPrincipalProductos">
         {% for pr in productos %}
         <div class="productoLista">
@@ -36,7 +37,7 @@ Crear pedido
         {% endfor %}
     </div>
     <div id="contenedorDatosClientePedido">
-        <form action="{% url 'crearPedido' %}" method="post">
+        <form action="{% url 'crearPedido' %}" method="post" id="formularioCrearPedido">
             {% csrf_token %}
             <h2>Datos Pedido</h2>
             <div class="contenedorDatosPedido">
@@ -72,12 +73,19 @@ Crear pedido
                 </div>
             </div>
             <div class="centrarBoton">
+                <a href="{% url 'listarPedidos' %}" class="botonEnlace Rojo">Cancelar</a>
                 <input type="submit" value="Hacer Pedido" class="botonEnlace">
             </div>
         </form>
     </div>
 </div>
 <script>
+    $("#formularioCrearPedido").submit(function (e){
+        e.preventDefault();
+        if(document.getElementById("listaProductosPedido").children.length!=0){
+            e.target.submit();
+        }
+    });
     function cargarDirecciones(e){
         $("#selectEnvio").empty();
         $("#selectFacturacion").empty();

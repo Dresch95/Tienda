@@ -8,7 +8,7 @@ Modificar Direccion
 <div id="contenedorFormularioModificar">
     <form action="{% url 'modificarDireccion' %}" method="post">
         {% csrf_token %}
-        <h2>Direccion</h2>
+        <h2>Modificar Direccion</h2>
         <div id="contenedorDireccionCliente">
             <div id="contenedorLabelsDireccion">
                 <label>Calle y Numero</label><span class="campoRequerido"> *</span>
@@ -33,7 +33,7 @@ Modificar Direccion
             <input type="hidden" value="{{direccion.id}}" name="direccion">
         </div>
         <div class="centrarBoton">
-            <a href="{% url 'detallesCliente' cliente.id %}" class="botonEnlace Rojo">Cancelar</a>
+            <a href="{% url 'detallesCliente' direccion.client.id %}" class="botonEnlace Rojo">Cancelar</a>
             <input type="submit" value="Modificar" class="botonEnlace Azul">
         </div>
     </form>

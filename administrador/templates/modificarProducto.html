@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block 'titulo' %}
-Crear producto
+Modificar producto
 {% endblock %}
 
 {% block 'contenido' %}
 <div id="contenedorFormularioCrear">
-    <form action="{% url 'modificarProducto' %}" method="post">
+    <form action="{% url 'modificarProducto' %}" method="post" id="formularioModificarProducto">
         {% csrf_token %}
-        <h2>Datos Producto</h2>
+        <h2>Modificar Producto</h2>
         <div id="contenedorImgProducto">
             {% if producto.imageURL != '' %}
             <img src="{{producto.imageURL}}" id="imagenProducto">
@@ -28,12 +28,12 @@ Crear producto
             </div>
             <div class="contenedorInputsProducto">
                 <input type="text" pattern="[^'\x22]{10,480}"
-                    placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen"
+                    placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen" value="{{producto.imageURL}}"
                     name="urlImagenProductoModificar" id="urlImagenProducto">
                 <br>
-                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Tortilla" name="nombreProductoModificar"
-                    value="{{producto.name}}" disabled>
-                <input type="hidden" name="productoID" value="{{producto.id}}">
+                <input type="text" pattern="[\p{Letter}\s]{1,99}" placeholder="Tortilla" name="nombreProductoModificar"
+                    id="nombreProductoModificar" value="{{producto.name}}" required>
+                <input type="hidden" name="productoID" id="productoID" value="{{producto.id}}">
             </div>
         </div>
         <div class="detallesProductoNuevo">
@@ -45,12 +45,12 @@ Crear producto
                     <label>Peso</label>
                 </div>
                 <div class="contenedorInputsProducto">
-                    <input type="text" pattern="[^0$][0-9.]+" placeholder="10" name="precioProductoModificarEstandar" value="{{estandar.price}}" required>
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoModificarEstandar" value="{{estandar.price}}" id="precioProductoModificarEstandar" required>
                     <br>
                     {% if estandar.weight is Null%}
-                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarEstandar">
+                        <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarEstandar">
                     {% else %}
-                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarEstandar" value="{{estandar.weight}}">
+                        <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarEstandar" value="{{estandar.weight}}">
                     {% endif %}
                 </div>
             </div>
@@ -63,17 +63,17 @@ Crear producto
                 </div>
                 <div class="contenedorInputsProducto">
                     {% if pequenho.price != 0 %}
-                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificarPequenho" value="{{pequenho.price}}">
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoModificarPequenho" value="{{pequenho.price}}">
                     <br>
                     {% if pequenho.weight is Null%}
-                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarPequenho">
+                        <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarPequenho">
                     {% else %}
-                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarPequenho" value="{{pequenho.weight}}">
+                        <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarPequenho" value="{{pequenho.weight}}">
                     {% endif %}
                     {% else %}
-                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificarPequenho">
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoModificarPequenho">
                     <br>
-                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarPequenho">
+                    <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarPequenho">
                     {% endif %}
                 </div>
             </div>
@@ -86,32 +86,71 @@ Crear producto
                 </div>
                 <div class="contenedorInputsProducto">
                     {% if grande.price != 0 %}
-                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoModificarGrande" value="{{grande.price}}">
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoModificarGrande" value="{{grande.price}}">
                     <br>
                     {% if pequenho.weight is Null%}
-                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarGrande">
+                        <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarGrande">
                     {% else %}
-                        <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarrande" value="{{grande.weight}}">
+                        <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarGrande" value="{{grande.weight}}">
                     {% endif %}
                     {% else %}
-                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="precioProductoModificarGrande">
+                    <input type="text" pattern="[0-9\.]+" placeholder="1000" name="precioProductoModificarGrande">
                     <br>
-                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoModificarGrande">
+                    <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoModificarGrande">
                     {% endif %}
                 </div>
             </div>
         </div>
         <div class="centrarBoton">
-            <input type="submit" value="Modificar" class="botonEnlace">
+            <a href="{% url 'detallesProducto' producto.id %}" class="botonEnlace Rojo">Cancelar</a>
+            <input type="submit" onclick="quitarAdvertencia();" value="Modificar" class="botonEnlace">
         </div>
     </form>
 </div>
 <script>
+    $("#formularioModificarProducto").submit(function(e) {
+        e.preventDefault();
+        var producto = document.getElementById('nombreProductoModificar');
+        var idProducto = document.getElementById('productoID');
+        if (producto.value != "") {
+            $.ajax({
+                url: "{% url 'comprobarProductoModificar' %}",
+                type: 'GET',
+                data: { 'idProducto':idProducto.value,'producto': producto.value },
+                dataType: 'json',
+                success: function (data) {
+
+                }
+            }).done(function (response) {
+                if (!response['producto_existe']) {
+                    document.getElementById("formularioModificarProducto").submit();
+                }else{
+                    producto.setCustomValidity("Ese nombre ya esta en uso");
+                    producto.reportValidity();
+                }
+            })
+                .fail(function () {
+                    console.log("failed");
+                })
+        }
+    });
     function cargarImagen(){
         var url=document.getElementById("urlImagenProducto").value;
         if(url!=''){
             document.getElementById("imagenProducto").setAttribute("src",url);
         }
+    }
+    function quitarAdvertencia(){
+        var producto = document.getElementById('nombreProductoModificar');
+        var productoEstandarPrecio = document.getElementById('precioProductoModificarEstandar');
+        if(parseFloat(productoEstandarPrecio.value)<=0){
+            productoEstandarPrecio.setCustomValidity("El precio no puede ser igual o menor a 0");
+            precioProdctoEstandar.reportValidity();
+        }else{
+            productoEstandarPrecio.setCustomValidity("");
+        }
+        producto.setCustomValidity("");
+        producto.reportValidity();
     }
 </script>
 {% endblock %}

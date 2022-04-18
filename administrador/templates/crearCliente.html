@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block 'titulo' %}
-Crear cliente
+Crear Cliente
 {% endblock %}
 
 {% block 'contenido' %}
 <div id="contenedorFormularioCrear">
-    <form action="{% url 'crearCliente' %}" method="post">
+    <form action="{% url 'crearCliente' %}" method="post" id="formularioCrearCliente">
         {% csrf_token %}
-        <h2>Datos Cliente</h2>
+        <h2>Crear Cliente</h2>
         <div id="contenedorDatosCliente">
             <div id="contenedorLabelsCliente">
                 <label>Nombre</label><span class="campoRequerido"> *</span>
@@ -20,8 +20,8 @@ Crear cliente
             <div id="contenedorInputsCliente">
                 <input type="text" pattern="[\p{Letter}\s,-]{1,99}" placeholder="Pepe" name="nombreClienteNuevo" required>
                 <br>
-                <input type="text" pattern="[\p{Letter}0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}"
-                    placeholder="ejemplo@ejemplo.com" name="emailClienteNuevo" required>
+                <input type="text" pattern="[\p{Letter}0-9._-]+@[\p{Letter}0-9._-]+\.[\p{Letter}]{2,}"
+                    placeholder="ejemplo@ejemplo.com" name="emailClienteNuevo" id="emailClienteNuevo" required>
                 <br>
                 <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteNuevo">
             </div>
@@ -50,8 +50,41 @@ Crear cliente
             </div>
         </div>
         <div class="centrarBoton">
-            <input type="submit" value="Crear" class="botonEnlace">
+            <a href="{% url 'listarClientes' %}" class="botonEnlace Rojo">Cancelar</a>
+            <input type="submit" onclick="quitarAdvertencia();" value="Crear" class="botonEnlace">
         </div>
     </form>
 </div>
+<script>
+    $("#formularioCrearCliente").submit(function(e) {
+        e.preventDefault();
+        var email = document.getElementById('emailClienteNuevo');
+        if (email.value != "") {
+            $.ajax({
+                url: "{% url 'comprobarEmail' %}",
+                type: 'GET',
+                data: { 'email': email.value },
+                dataType: 'json',
+                success: function (data) {
+
+                }
+            }).done(function (response) {
+                if (!response['email_existe']) {
+                    document.getElementById("formularioCrearCliente").submit();
+                }else{
+                    email.setCustomValidity("Ese email ya existe");
+                    email.reportValidity();
+                }
+            })
+                .fail(function () {
+                    console.log("failed");
+                })
+        }
+    });
+    function quitarAdvertencia(){
+        var email = document.getElementById('emailClienteNuevo');
+        email.setCustomValidity("");
+        email.reportValidity();
+    }
+</script>
 {% endblock %}

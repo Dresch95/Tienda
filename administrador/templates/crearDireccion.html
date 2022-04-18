@@ -8,7 +8,7 @@ Crear Direccion
 <div id="contenedorFormularioCrear">
     <form action="{% url 'crearDireccion' %}" method="post">
         {% csrf_token %}
-        <h2>Direccion</h2>
+        <h2>Crear Direccion</h2>
         <div id="contenedorDireccionCliente">
             <div id="contenedorLabelsDireccion">
                 <label>Calle y Numero</label><span class="campoRequerido"> *</span>
@@ -33,6 +33,7 @@ Crear Direccion
         </div>
         <input type="hidden" value="{{idCliente}}" name="cliente">
         <div class="centrarBoton">
+            <a href="{% url 'detallesCliente' idCliente %}" class="botonEnlace Rojo">Cancelar</a>
             <input type="submit" value="Crear" class="botonEnlace">
         </div>
     </form>

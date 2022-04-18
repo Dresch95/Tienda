@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 
 {% block 'titulo' %}
-Crear producto
+Crear Producto
 {% endblock %}
 
 {% block 'contenido' %}
 <div id="contenedorFormularioCrear">
-    <form action="{% url 'crearProducto' %}" method="post" onsubmit="return validarInformacion();"
-        id="formularioCrearProducto">
+    <form action="{% url 'crearProducto' %}" method="post" id="formularioCrearProducto">
         {% csrf_token %}
-        <h2>Datos Producto</h2>
+        <h2>Crear Producto</h2>
         <div id="contenedorImgProducto">
             {% load static %}
             <img src="{% static 'media/noimage.jpg' %}" id="imagenProducto">
@@ -28,7 +27,7 @@ Crear producto
                     placeholder="https://www.dominio.extension/mas-caracteres-que.indican-la-imagen"
                     name="urlImagenProductoNuevo" id="urlImagenProducto">
                 <br>
-                <input type="text" pattern="[a-zA-Z ]{1,99}" placeholder="Tortilla" name="nombreProductoNuevo"
+                <input type="text" pattern="[\p{Letter}\s]{1,99}" placeholder="Tortilla" name="nombreProductoNuevo"
                     id="nombreProductoNuevo" required>
             </div>
         </div>
@@ -41,7 +40,7 @@ Crear producto
                     <label>Peso</label>
                 </div>
                 <div class="contenedorInputsProducto">
-                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoNuevoEstandar" required>
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoNuevoEstandar" id="precioProductoNuevoEstandar" required>
                     <br>
                     <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoNuevoEstandar">
                 </div>
@@ -54,9 +53,9 @@ Crear producto
                     <label>Peso</label>
                 </div>
                 <div class="contenedorInputsProducto">
-                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoNuevoPequenho">
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoNuevoPequenho">
                     <br>
-                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoNuevoPequenho">
+                    <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoNuevoPequenho">
                 </div>
             </div>
             <div class="contenedorDatosProducto">
@@ -67,26 +66,27 @@ Crear producto
                     <label>Peso</label>
                 </div>
                 <div class="contenedorInputsProducto">
-                    <input type="text" pattern="[0-9.]+" placeholder="10" name="precioProductoNuevoGrande">
+                    <input type="text" pattern="[0-9\.]+" placeholder="10" name="precioProductoNuevoGrande">
                     <br>
-                    <input type="text" pattern="[0-9.]+" placeholder="1000" name="pesoProductoNuevoGrande">
+                    <input type="text" pattern="[0-9\.]+" placeholder="1000" name="pesoProductoNuevoGrande">
                 </div>
             </div>
         </div>
         <div class="centrarBoton">
-            <input type="submit" value="Crear" class="botonEnlace">
+            <a href="{% url 'listarProductos' %}" class="botonEnlace Rojo">Cancelar</a>
+            <input type="submit" onclick="quitarAdvertencia();" value="Crear" class="botonEnlace">
         </div>
     </form>
 </div>
 <script>
     $("#formularioCrearProducto").submit(function(e) {
         e.preventDefault();
-        var producto = document.getElementById('nombreProductoNuevo').value;
-        if (producto != "") {
+        var producto = document.getElementById('nombreProductoNuevo');
+        if (producto.value != "") {
             $.ajax({
                 url: "{% url 'comprobarProducto' %}",
                 type: 'GET',
-                data: { 'producto': producto },
+                data: { 'producto': producto.value },
                 dataType: 'json',
                 success: function (data) {
 
@@ -95,7 +95,8 @@ Crear producto
                 if (!response['producto_existe']) {
                     document.getElementById("formularioCrearProducto").submit();
                 }else{
-                    document.getElementById("nombreProductoNuevo").value="";
+                    producto.setCustomValidity("Ese nombre ya esta en uso");
+                    producto.reportValidity();
                 }
             })
                 .fail(function () {
@@ -108,6 +109,17 @@ Crear producto
         if(url!=''){
             document.getElementById("imagenProducto").setAttribute("src",url);
         }
+    }
+    function quitarAdvertencia(){
+        var precioProdctoEstandar = document.getElementById("precioProductoNuevoEstandar");
+        var producto = document.getElementById('nombreProductoNuevo');
+        if(parseFloat(precioProdctoEstandar.value)<=0){
+            precioProdctoEstandar.setCustomValidity("El precio no puede ser igual o menor a 0");
+        }else{
+            precioProdctoEstandar.setCustomValidity("");
+        }
+        producto.setCustomValidity("");
+        producto.reportValidity();
     }
 </script>
 {% endblock %}
