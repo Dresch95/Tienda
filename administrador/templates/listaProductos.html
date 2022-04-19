@@ -8,8 +8,8 @@ Listado de Productos
 <h2>Listado de Productos</h2>
 <div id="contenedorPrincipalProductosLista">
     {% for p in productos %}
-    <a href="{% url 'detallesProducto' p.id %}">
-        <div class="productoLista" id="{{p.id}}">
+    <div class="productoLista" id="{{p.id}}">
+        <a href="{% url 'detallesProducto' p.id %}">
             <div class="imagenProductoLista">
                 {% if p.imageURL != '' %}
                 <img src="{{p.imageURL}}" class="imagenProducto">
@@ -18,30 +18,28 @@ Listado de Productos
                 <img src="{% static 'media/noimage.jpg' %}" class="imagenProducto">
                 {% endif %}
             </div>
-            <div class="informacionProductoLista">
-                <a href="{% url 'detallesProducto' p.id %}">
-                    <div class="contenedorNombreProductoLista">
-                        <label class="nombreProductoLista">{{p.name}}</label>
-                    </div>
-                </a>
-                <div class="contenedorBotonesProductoLista">
-                    <a href="{% url 'modificarProductoVista' p.id %}" class="botonProductoLista Azul">Modificar</a>
-                    <a name="{{p.id}}" class="botonProductoLista Rojo" onclick="comprobarProducto(event);">Eliminar</a>
+        </a>
+        <div class="informacionProductoLista">
+            <a href="{% url 'detallesProducto' p.id %}">
+                <div class="contenedorNombreProductoLista">
+                    <label class="nombreProductoLista">{{p.name}}</label>
                 </div>
-            </div>
-            <div class="contenedorEstadoProducto">
-                {% if p.unable %}
-                <button value="{{p.id}}" id="modificarEstadoProducto"
-                        onclick="modificarEstadoDelProducto(event);"
-                        class="botonCambiarEstadoProducto botonHabilitar">Habilitar</button>
-                {% else %}
-                <button value="{{p.id}}" id="modificarEstadoProducto"
-                        onclick="modificarEstadoDelProducto(event);"
-                        class="botonCambiarEstadoProducto botonDeshabilitar">Deshabilitar</button>
-                {% endif %}
+            </a>
+            <div class="contenedorBotonesProductoLista">
+                <a href="{% url 'modificarProductoVista' p.id %}" class="botonProductoLista Azul">Modificar</a>
+                <a name="{{p.id}}" class="botonProductoLista Rojo" onclick="comprobarProducto(event);">Eliminar</a>
             </div>
         </div>
-    </a>
+        <div class="contenedorEstadoProducto">
+            {% if p.unable %}
+            <button value="{{p.id}}" id="modificarEstadoProducto" onclick="modificarEstadoDelProducto(event);"
+                class="botonCambiarEstadoProducto botonHabilitar">Habilitar</button>
+            {% else %}
+            <button value="{{p.id}}" id="modificarEstadoProducto" onclick="modificarEstadoDelProducto(event);"
+                class="botonCambiarEstadoProducto botonDeshabilitar">Deshabilitar</button>
+            {% endif %}
+        </div>
+    </div>
     {% endfor %}
 </div>
 <br>
@@ -49,6 +47,8 @@ Listado de Productos
     <a href="{% url 'crearProductoVista' %}" class="botonEnlace Azul">Crear Producto</a>
 </div>
 <script>
+    /*Llama a la funcion que comprueba si el producto o alguno de sus articulos estan en algun pedido antes de eliminarlo,
+      si estan en alguno no se elimina y se muestra la informacion al usuario*/
     function comprobarProducto(e) {
         if (confirm("Quieres eliminar el producto?")) {
             $.ajax({
@@ -72,6 +72,7 @@ Listado de Productos
                 })
         }
     }
+    /*Llama a la funcion que habilita y deshabilita el producto especificado*/
     function modificarEstadoDelProducto(event) {
         var boton = event.target;
         var id = boton.value;

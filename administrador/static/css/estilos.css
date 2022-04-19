@@ -20,6 +20,10 @@
     background-color: #04AA6D;
     color:white;
 }
+html,body{
+    height: 100%;
+    min-height: 100%;
+}
 /*footer*/
 footer{
     background-color: #333;
@@ -35,7 +39,7 @@ footer p{
 }
 /*listaProductos*/
 .productoLista{
-    height: 280px;
+    height: 320px;
     width: 250px;
 }
 .imagenProductoLista{
@@ -138,9 +142,17 @@ footer p{
 .contenedorDatosProducto,.contenedorDatosPedido{
     overflow-y: auto;
 }
-.contenedorLabelsProducto,.contenedorInputsProducto,.contenedorLabelsPedido,.contenedorInputsPedido{
+.contenedorLabelsPedido,.contenedorInputsPedido{
     width:49%;
     float:left;
+}
+.contenedorLabelsProducto{
+    width:61%;
+    float:left;
+}
+.contenedorInputsProducto{
+    width: 38%;
+    float: left;
 }
 .detallesProductoNuevo{
     overflow-y: auto;
@@ -207,6 +219,9 @@ footer p{
 
 
 /*Pedidos*/
+#tablaPedidos{
+    width: 50%;
+}
 .detallesPedido{
     overflow-y: auto;
 }
@@ -224,6 +239,18 @@ footer p{
 }
 .tamanhoProductoLista{
     float:left;
+}
+.tamanhoProductoLista.Grande{
+    color: red;
+}
+.tamanhoProductoLista.Estandar{
+    color: blue;
+}
+.tamanhoProductoLista.Pequenho{
+    color:green;
+}
+.tamanho{
+    margin-right:15pt;
 }
 .informacionProductoLista{
     overflow-y: auto;
@@ -297,8 +324,10 @@ body{
     margin-bottom:0pt;
 }
 table{
-    border:1px solid black;
     margin-bottom: 15pt;
+}
+.centrarTabla{
+    margin:0 auto;
 }
 h2{
     text-align: center;
@@ -353,7 +382,8 @@ th,td{
     border:1px solid black;
 }
 #contenedorPrincipal{
-    min-height: 734px;
+    min-height: 75.2%;
+    overflow: auto;
     margin: 0 15pt;
     overflow-y: hidden;
 }

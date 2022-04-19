@@ -22,7 +22,8 @@ Modificar cliente
                     value="{{cliente.name}}" required>
                 <br>
                 <input type="text" pattern="[\p{Letter}0-9._-]+@[\p{Letter}0-9._-]+\.[\p{Letter}]{2,}" placeholder="
-                    ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" id="emailClienteModificar" required>
+                    ejemplo@ejemplo.com" name="emailClienteModificar" value="{{cliente.email}}" id="emailClienteModificar" 
+                    onkeypress="quitarAdvertencia()" required>
                 <br>
                 <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteModificar"
                     value="{{cliente.tel}}">
@@ -36,6 +37,9 @@ Modificar cliente
     </form>
 </div>
 <script>
+    /*Llama a la funcion que comprueba si el email existe previamente o no,
+      si ya existe se notifica el error al usuario,
+      en caso contrario se modifica el cliente*/
     $("#formularioModificarCliente").submit(function (e) {
         e.preventDefault();
         var email = document.getElementById('emailClienteModificar');
@@ -62,6 +66,7 @@ Modificar cliente
                 })
         }
     });
+    /*Elimina la advertencia que indica si el email se esta usando*/
     function quitarAdvertencia() {
         var email = document.getElementById('emailClienteModificar');
         email.setCustomValidity("");

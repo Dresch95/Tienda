@@ -10,12 +10,12 @@ def listarClientes(request):
        llama al html que los muestra'''
     return render(request,'listaClientes.html',{"clientes": Clients.objects.all()})
 
-def detallesCliente(request,id):
+def detallesCliente(request,idCliente):
     '''Recibe el id del cliente del cual se quieren consultar sus datos.
        Devuelve el objeto cliente del cual le pasan el id, 
        una lista con todas las direcciones del cliente y 
        llama al html que lo muetra'''
-    cliente=Clients.objects.get(id=int(id))
+    cliente=Clients.objects.get(id=int(idCliente))
     return render(request,'detallesCliente.html',{"cliente":cliente,"direcciones":Address.objects.filter(client=int(cliente.id))})
 
 def crearClienteVista(request):
@@ -32,19 +32,19 @@ def crearCliente(request):
     Address(client=cliente,street=request.POST['calleDireccionNueva'],city=request.POST['ciudadDireccionNueva'],code=request.POST['codigoDireccionNueva'],country=request.POST['paisDireccionNueva'],unable=False).save()
     return HttpResponseRedirect('/listarClientes')
 
-def modificarClienteVista(request,id):
+def modificarClienteVista(request,idCliente):
     '''Recibe el id del cliente el cual se quieren modificar sus datos.
        Llama al html que muestra el formario para modificar el cliente e
        introduce los datos actuales de dicho cliente'''
-    return render(request,'modificarCliente.html',{"cliente":Clients.objects.get(pk=int(id))})
+    return render(request,'modificarCliente.html',{"cliente":Clients.objects.get(pk=int(idCliente))})
 
 def modificarCliente(request):
     '''Recibe los datos del cliente que se va a modificar.
        Modifica el cliente con los datos del formulario y
        llama a la funcion que muestra los detalles del cliente'''
-    id=request.POST['clienteID']
-    Clients.objects.filter(pk=int(id)).update(name=request.POST['nombreClienteModificar'],email=request.POST['emailClienteModificar'],tel=request.POST['telefonoClienteModificar'])
-    return HttpResponseRedirect(f'/detallesCliente/{id}')
+    idCliente=request.POST['clienteID']
+    Clients.objects.filter(pk=int(idCliente)).update(name=request.POST['nombreClienteModificar'],email=request.POST['emailClienteModificar'],tel=request.POST['telefonoClienteModificar'])
+    return HttpResponseRedirect(f'/detallesCliente/{idCliente}')
 
 def comprobarEmail(request):
     '''Recibe un string con el email a crear.
@@ -91,24 +91,24 @@ def comprobarCliente(request):
     return JsonResponse(data)
 
 #DIRECCIONES
-def crearDireccionVista(request,id):
+def crearDireccionVista(request,idCliente):
     '''Recibe el id del cliente de la direccion que se quiere crear.
        Llama al html que muestra el formulario para crear una direccion'''
-    return render(request,'crearDireccion.html',{"idCliente":id})
+    return render(request,'crearDireccion.html',{"idCliente":int(idCliente)})
 
 def crearDireccion(request):
     '''Recibe los datos de la direccion que se va a crear.
        Crea una direccion con los datos del formulario y
        llama a la funcion que muestra los detalles del cliente al que pertenece la direccion creada'''
-    id=request.POST['cliente']
-    Address(client=Clients.objects.get(pk=int(id)),street=request.POST['calleDireccionNueva'],city=request.POST['ciudadDireccionNueva'],code=request.POST['codigoDireccionNueva'],country=request.POST['paisDireccionNueva'],unable=False).save()
-    return HttpResponseRedirect(f'/detallesCliente/{id}')
+    idCliente=int(request.POST['cliente'])
+    Address(client=Clients.objects.get(pk=idCliente),street=request.POST['calleDireccionNueva'],city=request.POST['ciudadDireccionNueva'],code=request.POST['codigoDireccionNueva'],country=request.POST['paisDireccionNueva'],unable=False).save()
+    return HttpResponseRedirect(f'/detallesCliente/{idCliente}')
 
-def modificarDireccionVista(request,id):
+def modificarDireccionVista(request,idDireccion):
     '''Recibe el id de la direccion a modificar.
        Llama al html que muestra el formulario para modificar una direccion e
        introduce los datos actuales de dicha direccion'''
-    return render(request,'modificarDireccion.html',{"direccion":Address.objects.get(pk=int(id))})
+    return render(request,'modificarDireccion.html',{"direccion":Address.objects.get(pk=int(idDireccion))})
 
 def modificarDireccion(request):
     '''Recibe los datos de la direccion a modificar.
@@ -116,7 +116,7 @@ def modificarDireccion(request):
        llama a la funcion que muestra los datos del cliente a la que pertenece esa direccion'''
     direccion=Address.objects.filter(pk=int(request.POST['direccion']))
     direccion.update(street=request.POST['calleDireccionModificar'],city=request.POST['ciudadDireccionModificar'],code=request.POST['codigoDireccionModificar'],country=request.POST['paisDireccionModificar'])
-    return HttpResponseRedirect(f'/detallesCliente/{direccion.client.id}')
+    return HttpResponseRedirect(f'/detallesCliente/{direccion[0].client.id}')
 
 def cambiarEstadoDeLaDireccion(request):
     '''Recibe el id de la direccion de la cual se quiere cambiar el estado.
@@ -136,7 +136,7 @@ def comprobarDireccion(request):
        Comprueba si la direccion se ha usado en algun pedido existente,
        si se ha usado se devuelve True,
        si no hay pedidos existentes con dicha direccion se borra y se devuelve False'''
-    direccion=Address.objects.get(pk=request.POST['idDireccion'])
+    direccion=Address.objects.get(pk=int(request.POST['idDireccion']))
     if Orders.objects.filter(Q(billing_address=direccion.id) | Q(shipping_address=direccion.id)):
         data={"tiene_pedido":True}
     else:
@@ -150,12 +150,12 @@ def listarProductos(request):
        llama al html que los muestra'''
     return render(request,'listaProductos.html',{"productos":Products.objects.all()})
 
-def detallesProducto(request,id):
+def detallesProducto(request,idProducto):
     '''Recibe el id del producto del cual se quieren ver los detalles.
        Devuelve el objeto producto del cual le pasan el id y
        todos los articulos de producto(Product_Details) que se basan en el,
        despues llama al html que muestra toda la informacion'''
-    return render(request,'detallesProducto.html',{"producto":Products.objects.get(id=int(id)),"detalles":Products_Details.objects.filter(product=int(id))})
+    return render(request,'detallesProducto.html',{"producto":Products.objects.get(id=int(idProducto)),"detalles":Products_Details.objects.filter(product=int(idProducto))})
 
 def crearProductoVista(request):
     '''Llama al html que muestra el formulario para crear un producto'''
@@ -175,11 +175,11 @@ def crearProducto(request):
         Products_Details(product=producto,size='BG',price=request.POST['precioProductoNuevoGrande'],weight=request.POST['pesoProductoNuevoGrande'] if request.POST['pesoProductoNuevoGrande']!='' and float(request.POST['pesoProductoNuevoGrande'])>0 else None,unable=False).save()
     return HttpResponseRedirect('/listarProductos')
 
-def modificarProductoVista(request,id):
+def modificarProductoVista(request,idProducto):
     '''Recibe el id del producto a modificar.
        Llama al html que muestra el formulario para modificar el producto y sus articulos(Product_Details) e
        introduce los datos que ya existan'''
-    producto=Products.objects.get(pk=int(id))
+    producto=Products.objects.get(pk=int(idProducto))
     return render(request,'modificarProducto.html',{"producto":producto,"estandar":Products_Details.objects.get(product=producto.id,size='AV'),"pequenho":Products_Details.objects.get(product=producto.id,size='SM') if Products_Details.objects.filter(product=producto.id,size='SM').exists() else '',"grande":Products_Details.objects.get(product=producto.id,size='BG') if Products_Details.objects.filter(product=producto,size='BG').exists() else ''})
 
 def modificarProducto(request):
@@ -187,8 +187,8 @@ def modificarProducto(request):
        Modifica el producto y sus articulos(Product_Details) con los datos del formulario,
        comprobando que datos se han modificado y crea los tamaños de articulo si hay que crearlos,
        despues llama a la funcion que muestra los detalles del producto y sus articulos'''
-    id=request.POST['productoID']
-    producto=Products.objects.filter(id=int(id))
+    idProducto=int(request.POST['productoID'])
+    producto=Products.objects.filter(id=idProducto)
     producto.update(name=request.POST['nombreProductoModificar'],imageURL=request.POST['urlImagenProductoModificar'])
     productoEstandar=Products_Details.objects.filter(product=producto[0].id,size='AV')
     productoPequenho=Products_Details.objects.filter(product=producto[0].id,size='SM')
@@ -205,7 +205,7 @@ def modificarProducto(request):
             productoGrande.update(price=request.POST['precioProductoModificarGrande'],weight=request.POST['pesoProductoModificarGrande'] if request.POST['pesoProductoModificarGrande']!='' and float(request.POST['pesoProductoModificarGrande'])>0 else None,unable=False)
         else:
             Products_Details(product=producto[0],size='BG',price=request.POST['precioProductoModificarGrande'],weight=request.POST['pesoProductoModificarGrande'] if request.POST['pesoProductoModificarGrande']!='' and float(request.POST['pesoProductoModificarGrande'])>0 else None,unable=False).save()
-    return HttpResponseRedirect(f'/detallesProducto/{id}')
+    return HttpResponseRedirect(f'/detallesProducto/{idProducto}')
 
 def cambiarEstadoDelProducto(request):
     '''Recibe el id del producto al cual se le quiere cambiar el estado.
@@ -233,7 +233,7 @@ def comprobarProductoModificar(request):
        False si no el nombre del producto a modificar solo lo esta usando el propio producto'''
     return JsonResponse({'producto_existe':Products.objects.filter(name=request.GET['producto']).exclude(id=int(request.GET['idProducto'])).exists()})
 
-def cambiarEstadoProducto(request):
+def cambiarEstadoArticuloProducto(request):
     '''Recibe el id del producto del cual se quiere modificar el estado.
        Se cambia el estado del articulo del producto y devuelve un booleano,
        True si el articulo esta deshabilitado,
@@ -268,11 +268,11 @@ def listarPedidos(request):
        llama al html que los muestra'''
     return render(request,'listaPedidos.html',{"pedidos":Orders.objects.all()})
 
-def detallesPedido(request,id):
+def detallesPedido(request,idPedido):
     '''Recibe el id del pedido y devuelve todos los detalles de dich pedido y sus subpedidos(Order_Items),
        calcula el total y
        despues llama al html que muestra toda la informacion'''
-    pedido=Orders.objects.get(id=int(id))
+    pedido=Orders.objects.get(id=int(idPedido))
     detalles=Order_Items.objects.filter(order=pedido.id)
     total=0
     for item in detalles:

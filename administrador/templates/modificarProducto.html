@@ -32,7 +32,7 @@ Modificar producto
                     name="urlImagenProductoModificar" id="urlImagenProducto">
                 <br>
                 <input type="text" pattern="[\p{Letter}\s]{1,99}" placeholder="Tortilla" name="nombreProductoModificar"
-                    id="nombreProductoModificar" value="{{producto.name}}" required>
+                    id="nombreProductoModificar" value="{{producto.name}}" onkeypress="quitarAdvertencia()" required>
                 <input type="hidden" name="productoID" id="productoID" value="{{producto.id}}">
             </div>
         </div>
@@ -108,6 +108,10 @@ Modificar producto
     </form>
 </div>
 <script>
+    /*Llama a la funcion encargada de comprobar si el nombre del producto ya esta en uso
+      por algun otro producto que no sea el actual,
+      si ya esa en uso se muestra un error,
+      en caso contrario se modifica el producto y sus articulos*/
     $("#formularioModificarProducto").submit(function(e) {
         e.preventDefault();
         var producto = document.getElementById('nombreProductoModificar');
@@ -134,12 +138,15 @@ Modificar producto
                 })
         }
     });
+    /*Funcion encargada de cargar la imagen que se especifica en la URL*/
     function cargarImagen(){
         var url=document.getElementById("urlImagenProducto").value;
         if(url!=''){
             document.getElementById("imagenProducto").setAttribute("src",url);
         }
     }
+    /*Elimina la advertencia que indica si el nombre ya esta en uso y 
+      comprueba si el precio del articulo estandar es mayor de 0*/
     function quitarAdvertencia(){
         var producto = document.getElementById('nombreProductoModificar');
         var productoEstandarPrecio = document.getElementById('precioProductoModificarEstandar');

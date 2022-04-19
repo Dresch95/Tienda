@@ -59,6 +59,9 @@ Detalles de Cliente
     <a href="{% url 'modificarClienteVista' cliente.id %}" class="botonEnlace Azul">Modificar Cliente</a>
 </div>
 <script>
+    /*Llama a la funcion que comprueba que no se este usando la direccion en pedidos,
+      si se esta usando en pedidos no se elimina y se comunica al usuario
+    */
     function comprobarDireccion(e) {
         $.ajax({
             url: "{% url 'comprobarDireccion' %}",
@@ -80,6 +83,7 @@ Detalles de Cliente
                 console.log("failed");
             })
     }
+    /*Habilita y deshabilita la direccionespecificada*/
     function modificarEstadoDeLaDireccion(event) {
         var boton = event.target;
         var id = boton.value;

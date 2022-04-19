@@ -28,7 +28,7 @@ Crear Producto
                     name="urlImagenProductoNuevo" id="urlImagenProducto">
                 <br>
                 <input type="text" pattern="[\p{Letter}\s]{1,99}" placeholder="Tortilla" name="nombreProductoNuevo"
-                    id="nombreProductoNuevo" required>
+                    id="nombreProductoNuevo" onkeypress="quitarAdvertencia()" required>
             </div>
         </div>
         <div class="detallesProductoNuevo">
@@ -79,6 +79,10 @@ Crear Producto
     </form>
 </div>
 <script>
+    /*Llama a la funcion que comprueba si el nombre del producto no existe previamente,
+      si ya existe muestra un error, en caso contrario llama a la funcion que se encarga de crear
+      el producto y sus articulos
+    */
     $("#formularioCrearProducto").submit(function(e) {
         e.preventDefault();
         var producto = document.getElementById('nombreProductoNuevo');
@@ -104,12 +108,16 @@ Crear Producto
                 })
         }
     });
+    /*Funcion encargada de cargar la imagen de la URL especificada*/
     function cargarImagen(){
         var url=document.getElementById("urlImagenProducto").value;
         if(url!=''){
             document.getElementById("imagenProducto").setAttribute("src",url);
         }
     }
+    /*Antes de comprobar si el nombre ya esta en uso elimino la advertencia y compruebo que el precio
+      no sea 0 o inferior
+    */
     function quitarAdvertencia(){
         var precioProdctoEstandar = document.getElementById("precioProductoNuevoEstandar");
         var producto = document.getElementById('nombreProductoNuevo');

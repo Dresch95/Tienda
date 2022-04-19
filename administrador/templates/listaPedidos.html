@@ -8,7 +8,7 @@ Listado de Pedidos
 <div id="listaPedidos">
     <h2>Listado de Pedidos</h2>
     {% if pedidos %}
-    <table>
+    <table class="centrarTabla" id="tablaPedidos">
         <thead>
             <tr>
                 <th>Nombre</th>
@@ -31,6 +31,7 @@ Listado de Pedidos
     </div>
 </div>
 <script>
+    /*Llama a la funcion que elimina el pedido*/
     function eliminarPedido(e) {
         if(confirm("Seguro que quieres eliminar el pedido?")){
         $.ajax({

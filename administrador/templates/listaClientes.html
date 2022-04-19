@@ -7,7 +7,7 @@ Listado de Clientes
 {% block 'contenido' %}
 <h2>Listado de Clientes</h2>
 {% if clientes %}
-<table>
+<table class="centrarTabla">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -37,6 +37,8 @@ Listado de Clientes
     <a href="{% url 'crearClienteVista' %}" class="botonEnlace Azul">Crear Cliente</a>
 </div>
 <script>
+    /*Llama a la funcion que habilita y deshabilita el cliente especificado
+    */
     function modificarEstadoDelCliente(event) {
         var boton = event.target;
         var id = boton.value;
@@ -58,6 +60,9 @@ Listado de Clientes
             console.log("failed");
         })
     }
+    /*Llama a la funcion encargada de comprobar si el cliente esta en algun pedido y le envia el id del cliente,
+      si tiene algun pedido no se elimina y se indica la informacion al usuario
+    */
     function comprobarCliente(e) {
         if (confirm("Quieres eliminar el cliente?")) {
             $.ajax({

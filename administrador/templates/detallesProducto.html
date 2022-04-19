@@ -29,28 +29,30 @@ Detalles de Producto
                 <tbody>
                     {% for d in detalles %}
                     {% if d.price != 0 %}
-                        <tr>
-                            {% if d.size == 'BG' %}
-                            <td>Grande</td>
-                            {% elif d.size == 'AV' %}
-                            <td>Estandar</td>
-                            {% elif d.size == 'SM' %}
-                            <td>Pequeño</td>
-                            {% endif %}
-                            {% if d.weight is not Null %}
-                            <td class="cifras">{{d.weight}}</td>
-                            {% else %}
-                            <td></td>
-                            {% endif %}
-                            <td class="cifras">{{d.price}}</td>
-                            {% if d.unable %}
-                            <td><button value="{{d.id}}" id="modificarEstadoProducto" onclick="modificarEstadoDelProducto(event);"
-                                    class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
-                            {% else %}
-                            <td><button value="{{d.id}}" id="modificarEstadoProducto" onclick="modificarEstadoDelProducto(event);"
-                                    class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
-                            {% endif %}
-                        </tr>
+                    <tr>
+                        {% if d.size == 'BG' %}
+                        <td>Grande</td>
+                        {% elif d.size == 'AV' %}
+                        <td>Estandar</td>
+                        {% elif d.size == 'SM' %}
+                        <td>Pequeño</td>
+                        {% endif %}
+                        {% if d.weight is not Null %}
+                        <td class="cifras">{{d.weight}}</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td class="cifras">{{d.price}}</td>
+                        {% if d.unable %}
+                        <td><button value="{{d.id}}" id="modificarEstadoProducto"
+                                onclick="modificarEstadoDelProducto(event);"
+                                class="botonCambiarEstado botonHabilitar">Habilitar</button></td>
+                        {% else %}
+                        <td><button value="{{d.id}}" id="modificarEstadoProducto"
+                                onclick="modificarEstadoDelProducto(event);"
+                                class="botonCambiarEstado botonDeshabilitar">Deshabilitar</button></td>
+                        {% endif %}
+                    </tr>
                     {% endif %}
                     {% endfor %}
                 </tbody>
@@ -60,12 +62,13 @@ Detalles de Producto
     </div>
 </div>
 <script>
-        function modificarEstadoDelProducto(event) {
+    /*Llama a la funcion que habilita y deshabilita el articulo de producto especificado*/
+    function modificarEstadoDelProducto(event) {
         var boton = event.target;
         var id = boton.value;
         $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' } });
         $.ajax({
-            url: "{% url 'cambiarEstadoProducto' %}",
+            url: "{% url 'cambiarEstadoArticuloProducto' %}",
             type: 'POST',
             data: { 'idProducto': id },
             dataType: 'json'

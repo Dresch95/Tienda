@@ -23,7 +23,13 @@ Crear Pedido
                     <label>{{pr.product.name}}</label>
                 </div>
                 <div class="detallesProductoLista">
-                    <label class="tamanhoProductoLista">{% if pr.size == 'BG' %}Grande{% elif pr.size == 'AV' %}Estandar{% elif pr.size == 'SM' %}Pequeño{% endif %}</label>
+                    {% if pr.size == 'BG' %}
+                    <label class="tamanhoProductoLista Grande">Grande</label>
+                    {% elif pr.size == 'AV' %}
+                    <label class="tamanhoProductoLista Estandar">Estandar</label>
+                    {% elif pr.size == 'SM' %}
+                    <label class="tamanhoProductoLista Pequenho">Pequeño</label>
+                    {% endif %}</label>
                     <label class="precioProductoLista">€</label><label class="precioProductoLista">{{pr.price}}</label>
                 </div>
             </div>
@@ -80,12 +86,20 @@ Crear Pedido
     </div>
 </div>
 <script>
+    /*Comprueba si el pedido tiene articulos,
+      si tiene se crea el pedido,
+      en caso contrario se indica el problema al usuario*/
     $("#formularioCrearPedido").submit(function (e){
         e.preventDefault();
         if(document.getElementById("listaProductosPedido").children.length!=0){
             e.target.submit();
+        }else{
+            alert("No hay ningun producto en el pedido");
         }
     });
+    /*Al modificar el select de cliente se llama a la funcion encargada 
+      de devolver todas las direcciones disponibles del cliente y 
+      se cargan en los select de facturacion y envio*/
     function cargarDirecciones(e){
         $("#selectEnvio").empty();
         $("#selectFacturacion").empty();
@@ -116,6 +130,11 @@ Crear Pedido
                     console.log("failed");
                 })
     }
+    /*Cada vez que se presione el boton verde de + de cada articulo de producto
+      se comprueba si el articulo ya existe en el pedido,
+      si ya existe se añade uno a la cantidad,
+      en caso contrario se crea, se muestra a la derecha y se habilita el boton de quitar
+      */
     function anhadirProducto(event) {
         var contenedor = document.getElementById("listaProductosPedido");
         var yaExiste = false;
@@ -123,8 +142,8 @@ Crear Pedido
         for (var i = 0; i < contenedor.children.length; i++) {
             if (contenedor.children[i].children[0].children[0].value == event.target.value) {
                 contenedor.children[i].children[1].children[0].value++;
-                contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)+parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
-                total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
+                contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)+parseFloat(contenedor.children[i].children[0].children[3].value)).toFixed(2);
+                total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[3].value)).toFixed(2);
                 yaExiste=true;
             }
         }
@@ -151,6 +170,7 @@ Crear Pedido
 
             nombreProducto.textContent=event.target.parentElement.parentElement.children[1].children[0].children[0].textContent;
             tamanhoProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[0].textContent;
+            tamanhoProducto.setAttribute("class","totalPrecioProducto tamanho");
             moneda.textContent="€";
             moneda2.textContent="€";
             totalProducto.textContent=event.target.parentElement.parentElement.children[1].children[1].children[2].textContent;
@@ -177,29 +197,32 @@ Crear Pedido
 
             contenedorInfoProducto.appendChild(producto);
             contenedorInfoProducto.appendChild(nombreProducto);
-            contenedorInfoProducto.appendChild(tamanhoProducto);
             contenedorCantidadProducto.appendChild(cantidad);
             contenedorCantidadProducto.appendChild(moneda2);
             contenedorCantidadProducto.appendChild(totalProducto);
             contenedorInfoProducto.appendChild(moneda);
             contenedorInfoProducto.appendChild(precioProducto);
+            contenedorInfoProducto.appendChild(tamanhoProducto);
             event.target.parentElement.children[0].setAttribute("class","quitarProducto");
-            total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
+            total.textContent=(parseFloat(total.textContent)+parseFloat(contenedor.children[i].children[0].children[3].value)).toFixed(2);
         }
     }
+    /*Cada vez que se presione el boton - del articulo se le restara uno a la cantidad 
+      del articulo del pedido hasta que quede uno, cuando solo quede uno y se presione el boton
+      se eliminara el articulo del pedido*/
     function quitarProducto(event){
         var contenedor = document.getElementById("listaProductosPedido");
         var total=document.getElementById("precioTotalDelPedido");
         for (var i = 0; i < contenedor.children.length; i++) {
             if (contenedor.children[i].children[0].children[0].value == event.target.value) {
                 if(contenedor.children[i].children[1].children[0].value==1){
-                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
+                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[3].value)).toFixed(2);
                     contenedor.removeChild(contenedor.children[i]);
                     event.target.setAttribute("class","noPuedoQuitar");
                 }else{
                     contenedor.children[i].children[1].children[0].value--;
-                    contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)-parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
-                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[4].value)).toFixed(2);
+                    contenedor.children[i].children[1].children[2].textContent=(parseFloat(contenedor.children[i].children[1].children[2].textContent)-parseFloat(contenedor.children[i].children[0].children[3].value)).toFixed(2);
+                    total.textContent=(parseFloat(total.textContent)-parseFloat(contenedor.children[i].children[0].children[3].value)).toFixed(2);
                 }
             }
         }

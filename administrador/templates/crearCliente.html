@@ -21,7 +21,7 @@ Crear Cliente
                 <input type="text" pattern="[\p{Letter}\s,-]{1,99}" placeholder="Pepe" name="nombreClienteNuevo" required>
                 <br>
                 <input type="text" pattern="[\p{Letter}0-9._-]+@[\p{Letter}0-9._-]+\.[\p{Letter}]{2,}"
-                    placeholder="ejemplo@ejemplo.com" name="emailClienteNuevo" id="emailClienteNuevo" required>
+                    placeholder="ejemplo@ejemplo.com" name="emailClienteNuevo" id="emailClienteNuevo" onkeypress="quitarAdvertencia()" required>
                 <br>
                 <input type="text" pattern="[0-9()+]{1,20}" placeholder="666555666" name="telefonoClienteNuevo">
             </div>
@@ -56,6 +56,10 @@ Crear Cliente
     </form>
 </div>
 <script>
+    /*Llama a la funcion que comprueba si el email ya existe,
+      si ya eiste no deja enviar los datos, en caso contrario llamara a la funcion
+      encargada de crear al cliente
+    */
     $("#formularioCrearCliente").submit(function(e) {
         e.preventDefault();
         var email = document.getElementById('emailClienteNuevo');
@@ -81,6 +85,7 @@ Crear Cliente
                 })
         }
     });
+    /*Antes de verificar si el email existe o no elimino la advertencia*/
     function quitarAdvertencia(){
         var email = document.getElementById('emailClienteNuevo');
         email.setCustomValidity("");
