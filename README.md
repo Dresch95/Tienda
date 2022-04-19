@@ -9,9 +9,13 @@ python -m virtualenv .venv
 ```
 .venv es el nombre de la carpeta del entorno virtual(modifiquelo al gusto)
 
-Active el entorno virtual con el siguiente comando:
+Active el entorno virtual con el siguiente comando(Ubuntu):
 ```
 source .venv/bin/activate
+```
+(Windows):
+```
+.venv\Scripts\activate
 ```
 Cambie el .venv si no le ha llamado asi a la carpeta
 
